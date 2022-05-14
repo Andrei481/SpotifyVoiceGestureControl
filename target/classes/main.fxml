@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.PasswordField?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
@@ -38,7 +39,7 @@
                </font>
             </Label>
             <TextField fx:id="tf_username" layoutX="126.0" layoutY="144.0" prefHeight="16.0" prefWidth="139.0" />
-            <TextField fx:id="tf_password" layoutX="126.0" layoutY="176.0" prefHeight="16.0" prefWidth="139.0" />
+            <PasswordField fx:id="passwordField" accessibleRole="PASSWORD_FIELD" layoutX="126.0" layoutY="176.0" prefHeight="16.0" prefWidth="139.0" />
             <Button fx:id="button_login" layoutX="90.0" layoutY="241.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="179.0" style="-fx-background-color: #FCFF01; -fx-cursor: hand;" text="Login">
                <font>
                   <Font name="Arial Rounded MT Bold" size="20.0" />
