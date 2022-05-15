@@ -11,26 +11,26 @@ import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
     @FXML
-    private Button button_logout;
+    private Button buttonLogout;
 
     @FXML
-    private Label label_welcome;
+    private Label labelWelcome;
     @FXML
-    private Label label_role;
+    private Label labelRole;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        button_logout.setOnAction(new EventHandler<ActionEvent>() {
+        buttonLogout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBUtils.changeScene(event, "main.fxml", "Login", null, null);
+                DBUtils.changeScene(event, "main.fxml", "Login", null, null, null, 0, null, null, null);
             }
         });
     }
 
-    public void setUserInfo(String username, String role)
+    public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
-        label_welcome.setText("Welcome, "+username+"!");
-        label_role.setText("Role: "+role);
+        labelWelcome.setText("Welcome, "+username+"!");
+        labelRole.setText("Role: "+role);
     }
 }

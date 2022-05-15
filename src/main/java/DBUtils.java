@@ -9,8 +9,8 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.*;
 
-public class DBUtils {
-    public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role)
+public class DBUtils extends Controller{
+    public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         Parent root = null;
         if(username != null && role != null)
@@ -19,7 +19,7 @@ public class DBUtils {
                 FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
                 root = loader.load();
                 LogInController logInController = loader.getController();
-                logInController.setUserInfo(username, role);
+                logInController.setUserInfo(username, role, name, age, gender, email, licensePlate);
             }catch (IOException e)
             {
                 e.printStackTrace();
@@ -36,11 +36,11 @@ public class DBUtils {
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 600, 600));
         stage.show();
     }
 
-    public static void registerUser(ActionEvent event, String username, String password, String role)
+    public static void registerUser(ActionEvent event, String username, String password, String role, String name, int age, String gender, String email, String licensePlate)
     {
         /**
          * these variables are the connections to the mysql database
@@ -49,6 +49,7 @@ public class DBUtils {
         Connection connection = null;
         PreparedStatement psInsert = null;
         PreparedStatement psCheckUserAlreadyExists = null;
+        //PreparedStatement psCheckEmailAlreadyUsed = null;
         ResultSet resultSet = null;
 
         try{
@@ -57,8 +58,10 @@ public class DBUtils {
               */
 
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rideshare_upt", "root", "t00r_sef");
-            psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+            psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM user_database WHERE username = ?");
             psCheckUserAlreadyExists.setString(1, username);
+            //psCheckEmailAlreadyUsed = connection.prepareStatement("SELECT * FROM user_database WHERE email = ? ");
+            //psCheckEmailAlreadyUsed.setString(7, email);
             resultSet = psCheckUserAlreadyExists.executeQuery();
 
             /**
@@ -70,21 +73,26 @@ public class DBUtils {
             {
                 System.out.println("Username already taken!");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("You cannot use this username.");
-                alert.show();
+                alert.setContentText("User already exists!");
+                alert.showAndWait();
             }
             else
             {
-                psInsert = connection.prepareStatement("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
+                psInsert = connection.prepareStatement("INSERT INTO user_database (username, password, role, name, age, gender, email, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 psInsert.setString(1, username);
                 psInsert.setString(2, password);
                 psInsert.setString(3, role);
+                psInsert.setString(4, name);
+                psInsert.setInt(5, age);
+                psInsert.setString(6, gender);
+                psInsert.setString(7, email);
+                psInsert.setString(8, licensePlate);
                 psInsert.executeUpdate();
 
                 if(role.equals("Driver"))
-                    changeScene(event, "login_driver.fxml", "Successful login driver", username, role);
+                    changeScene(event, "login_driver.fxml", "Successful login driver", username, role, name, age, gender, email, licensePlate);
                 else if(role.equals("Client"))
-                    changeScene(event,"login_client.fxml", "Successful login client", username, role);
+                    changeScene(event,"login_client.fxml", "Successful login client", username, role, name, age, gender, email, licensePlate);
             }
         }catch (SQLException e)
         {
@@ -141,7 +149,7 @@ public class DBUtils {
 
         try{
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rideshare_upt", "root", "t00r_sef");
-            preparedStatement = connection.prepareStatement("SELECT password, role FROM users WHERE username = ?");
+            preparedStatement = connection.prepareStatement("SELECT password, role, name, age, gender, email, license_plate FROM user_database WHERE username = ?");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
 
@@ -168,6 +176,11 @@ public class DBUtils {
                 {
                     String retrievedPassword = resultSet.getString("password");
                     String retrievedRole = resultSet.getString("role");
+                    String retrievedName = resultSet.getString("name");
+                    Integer retrievedAge = resultSet.getInt("age");
+                    String retrievedGender = resultSet.getString("gender");
+                    String retrievedEmail = resultSet.getString("email");
+                    String retrievedPlate = resultSet.getString("license_plate");
                     /**
                      * check each password
                      * if true => login the user
@@ -176,9 +189,9 @@ public class DBUtils {
                     if(retrievedPassword.equals(password))
                     {
                         if(retrievedRole.equals("Driver"))
-                            changeScene(event, "login_driver.fxml", "Successful login driver", username, retrievedRole);
+                            changeScene(event, "login_driver.fxml", "Successful login driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                         else if(retrievedRole.equals("Client"))
-                            changeScene(event,"login_client.fxml", "Successful login client", username, retrievedRole);
+                            changeScene(event,"login_client.fxml", "Successful login client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                     }
                     else
                     {

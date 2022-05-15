@@ -7,12 +7,12 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogInController">
    <children>
-      <Label fx:id="label_welcome" layoutX="200.0" layoutY="14.0" text="Client Login Screen">
+      <Label fx:id="labelWelcome" layoutX="200.0" layoutY="14.0" text="Client Login Screen">
          <font>
             <Font name="Arial Rounded MT Bold" size="17.0" />
          </font>
       </Label>
-      <Button fx:id="button_logout" layoutX="274.0" layoutY="152.0" mnemonicParsing="false" text="Logout">
+      <Button fx:id="buttonLogout" layoutX="274.0" layoutY="152.0" mnemonicParsing="false" text="Logout">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
@@ -22,7 +22,7 @@
             <Font name="Arial Rounded MT Bold" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="label_role" layoutX="260.0" layoutY="104.0" text="Label">
+      <Label fx:id="labelRole" layoutX="260.0" layoutY="104.0" text="Label">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>

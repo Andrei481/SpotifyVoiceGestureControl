@@ -7,17 +7,17 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogInController">
    <children>
-      <Label fx:id="label_welcome" layoutX="200.0" layoutY="52.0" text="Driver LoginScreen">
+      <Label fx:id="labelWelcome" layoutX="200.0" layoutY="52.0" text="Driver LoginScreen">
          <font>
             <Font name="Arial Rounded MT Bold" size="21.0" />
          </font>
       </Label>
-      <Button fx:id="button_logout" layoutX="274.0" layoutY="188.0" mnemonicParsing="false" text="Logout">
+      <Button fx:id="buttonLogout" layoutX="274.0" layoutY="188.0" mnemonicParsing="false" text="Logout">
          <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="label_role" layoutX="242.0" layoutY="120.0" text="ROLE: DRIVER">
+      <Label fx:id="labelRole" layoutX="242.0" layoutY="120.0" text="ROLE: DRIVER">
          <font>
             <Font name="Arial Rounded MT Bold" size="16.0" />
          </font>
