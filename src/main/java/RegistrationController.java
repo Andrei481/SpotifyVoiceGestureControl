@@ -8,8 +8,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegistrationController extends Controller implements Initializable {
     @FXML
@@ -102,13 +105,20 @@ public class RegistrationController extends Controller implements Initializable 
                     System.out.println("Gender: "+gender);
                     System.out.println("Email: "+email);
                     System.out.println("Username: "+username+"\nPassword: "+password+"\nRole: "+role);
-                    /*if(age < 18 && role.equals("Driver"))
+                    if(age < 18 && role.equals("Driver"))
                     {
                         displayError("You must be at least 18 to register as a driver!");
+                        System.out.println("Error: Invalid age!");
                     }
-                    else {*/
-                    DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
-                    //}
+                    else if(!checkValidEmail(email))
+                    {
+                        displayError("The email address you've entered is invalid!");
+                        System.out.println("Error: Invalid email address!");
+                    }
+                    else
+                    {
+                        DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
+                    }
                 }else
                 {
                     displayError("Please fill all empty fields!");
@@ -126,38 +136,6 @@ public class RegistrationController extends Controller implements Initializable 
         });
     }
 
-    /*public void signUp(ActionEvent event)
-    {
-        //ToggleGroup toggleGroup = new ToggleGroup();
-        //role = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
-        //if(role.equals("Client"))
-        //{
-        //    licensePlate = "";
-        //}
-        role = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
-        System.out.println("Role: "+role);
-        setName();
-        System.out.println("License plate: "+licensePlate);
-    */
-        /**
-         * check if username and password contain no whitespace
-         **/
-
-        /*if(!checkEmptyFields())
-        {
-            DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
-        }else
-        {
-            System.out.println("Not all fields were completed!");
-            displayError("Please fill all empty fields!");
-        }
-    }
-
-    public void login(ActionEvent event)
-    {
-        DBUtils.changeScene(event, "main.fxml", "Login", null, null, null, 0, null, null, null);
-    }*/
-
     public boolean checkEmptyFields()
     {
         if(textFieldUsername.textProperty().getValue() == null || textFieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null)
@@ -172,6 +150,20 @@ public class RegistrationController extends Controller implements Initializable 
             }
         }*/
         return false;
+    }
+
+    public boolean checkValidEmail(String email)
+    {
+        boolean result = true;
+        final String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+
+        if(matcher.matches())
+            result = true;
+        else
+            result = false;
+        return result;
     }
 
     /*public void firstNameEntered(ActionEvent event)
