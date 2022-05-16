@@ -16,7 +16,7 @@
          <children>
             <ImageView layoutX="16.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: transparent;">
                <image>
-                  <Image url="@smaller-icon.png" />
+                  <Image url="@images/logo206.png" />
                </image>
             </ImageView>
             <Label layoutX="45" layoutY="265.0" text="Don't have an account?">
@@ -44,7 +44,7 @@
             </Label>
             <ImageView layoutX="140.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@small-lock-transparent.png" />
+                  <Image url="@images/lock72.png" />
                </image>
             </ImageView>
             <TextField fx:id="textFieldUsername" layoutX="126.0" layoutY="184.0" prefHeight="16.0" prefWidth="200.0" />

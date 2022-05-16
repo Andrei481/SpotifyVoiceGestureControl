@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 public class Main extends javafx.application.Application{
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        stage.setTitle("RideSharing");
+        stage.setTitle("RideShare");
         stage.setScene(new Scene(root, 600, 400));
         stage.show();
     }
