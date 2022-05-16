@@ -21,7 +21,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         buttonLogin.setOnAction(event -> DBUtils.loginUser(event, textFieldUsername.getText(), passwordField.getText()));
-        buttonSignup.setOnAction(event -> DBUtils.changeScene(event, "register.fxml", "RideShare - Sign Up", null, null, null, 0, null, null, null));
+        buttonSignup.setOnAction(event -> DBUtils.changeScene(event, "register.fxml", "RideShare - Sign up", null, null, null, 0, null, null, null));
     }
 
     public void displayError(String errorMessage)
