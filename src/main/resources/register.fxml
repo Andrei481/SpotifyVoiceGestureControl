@@ -44,7 +44,7 @@
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
             </Label>
-            <Button fx:id="buttonSignup" layoutX="222.0" layoutY="502.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" style="-fx-background-color: #FFFF00; -fx-cursor: hand;" text="Signup" textFill="#0033ff">
+            <Button fx:id="buttonSignup" layoutX="222.0" layoutY="502.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" style="-fx-background-color: #FFFF00; -fx-cursor: hand;" text="Sign Up" textFill="#0033ff">
                <font>
                   <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>

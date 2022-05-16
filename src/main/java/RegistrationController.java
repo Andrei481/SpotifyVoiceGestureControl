@@ -114,7 +114,7 @@ public class RegistrationController extends Controller implements Initializable 
              // check if username and password contain no whitespace
         });
 
-        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "main.fxml", "Login", null, null, null, 0, null, null, null));
+        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "main.fxml", "RideShare", null, null, null, 0, null, null, null));
     }
 
     public boolean checkEmptyFields()
