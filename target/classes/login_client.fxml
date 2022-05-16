@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogInController">
+   <children>
+      <Label fx:id="labelWelcome" layoutX="200.0" layoutY="14.0" text="Client Login Screen">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="17.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonLogout" layoutX="274.0" layoutY="152.0" mnemonicParsing="false" text="Logout">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="419.0" layoutY="175.0" text="Request Ride">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelRole" layoutX="260.0" layoutY="104.0" text="Label">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
