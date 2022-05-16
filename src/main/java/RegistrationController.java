@@ -30,7 +30,7 @@ public class RegistrationController extends Controller implements Initializable 
     @FXML
     private Label labelLicensePlate;
 
-    private ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female");
+    private ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
     private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = new String("");
     private int age;
 
