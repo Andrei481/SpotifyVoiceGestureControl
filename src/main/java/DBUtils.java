@@ -57,7 +57,7 @@ public class DBUtils extends Controller{
              * this will attempt to establish a connection with the db
               */
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rideshare_upt", "root", "t00r_sef");
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
             psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM user_database WHERE username = ?");
             psCheckUserAlreadyExists.setString(1, username);
             //psCheckEmailAlreadyUsed = connection.prepareStatement("SELECT * FROM user_database WHERE email = ? ");
@@ -148,7 +148,7 @@ public class DBUtils extends Controller{
         ResultSet resultSet = null;
 
         try{
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rideshare_upt", "root", "t00r_sef");
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
             preparedStatement = connection.prepareStatement("SELECT password, role, name, age, gender, email, license_plate FROM user_database WHERE username = ?");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
