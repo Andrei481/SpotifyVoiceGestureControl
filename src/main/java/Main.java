@@ -20,4 +20,5 @@ public class Main extends javafx.application.Application{
     public static void main(String[] args) {
         launch();
     }
+    //  Reminder: Delete "target" directory before compiling a different branch
 }
