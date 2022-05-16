@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class DBUtils extends Controller{
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email, String licensePlate)
@@ -28,7 +29,7 @@ public class DBUtils extends Controller{
         else
         {
             try{
-                root = FXMLLoader.load(DBUtils.class.getResource(fxmlFile));
+                root = FXMLLoader.load(Objects.requireNonNull(DBUtils.class.getResource(fxmlFile)));
             }catch (IOException e)
             {
                 e.printStackTrace();
@@ -36,14 +37,14 @@ public class DBUtils extends Controller{
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 600, 600));
+        stage.setScene(new Scene(Objects.requireNonNull(root), 600, 600));
         stage.show();
     }
 
     public static void registerUser(ActionEvent event, String username, String password, String role, String name, int age, String gender, String email, String licensePlate)
     {
-        /**
-         * these variables are the connections to the mysql database
+        /*
+          these variables are the connections to the mysql database
           */
 
         Connection connection = null;
@@ -53,8 +54,8 @@ public class DBUtils extends Controller{
         ResultSet resultSet = null;
 
         try{
-            /**
-             * this will attempt to establish a connection with the db
+            /*
+              this will attempt to establish a connection with the db
               */
 
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
@@ -64,9 +65,9 @@ public class DBUtils extends Controller{
             //psCheckEmailAlreadyUsed.setString(7, email);
             resultSet = psCheckUserAlreadyExists.executeQuery();
 
-            /**
-             * check if the resultSet is empty
-             * if true => username already taken => notify user about this
+            /*
+              check if the resultSet is empty
+              if true => username already taken => notify user about this
              */
 
             if(resultSet.isBeforeFirst())
@@ -98,8 +99,8 @@ public class DBUtils extends Controller{
         {
             e.printStackTrace();
         }finally {
-            /**
-             * close db connections to avoid memory leaks
+            /*
+              close db connections to avoid memory leaks
               */
 
             if(resultSet != null)
@@ -153,8 +154,8 @@ public class DBUtils extends Controller{
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
 
-            /**
-             * if this is false => username not found in the db => notify user
+            /*
+              if this is false => username not found in the db => notify user
               */
 
             if(!resultSet.isBeforeFirst())
@@ -164,24 +165,24 @@ public class DBUtils extends Controller{
                 alert.setContentText("Incorrect credentials.");
                 alert.show();
             }
-            /**
+            /*
              *  if the user is found in the DB => compare the password they wrote with the one originally in the db
              */
             else
             {
-                /***
-                 *  loop through the result set and retrieve each password and role
+                /*
+                 loop through the result set and retrieve each password and role
                  */
                 while(resultSet.next())
                 {
                     String retrievedPassword = resultSet.getString("password");
                     String retrievedRole = resultSet.getString("role");
                     String retrievedName = resultSet.getString("name");
-                    Integer retrievedAge = resultSet.getInt("age");
+                    int retrievedAge = resultSet.getInt("age");
                     String retrievedGender = resultSet.getString("gender");
                     String retrievedEmail = resultSet.getString("email");
                     String retrievedPlate = resultSet.getString("license_plate");
-                    /**
+                    /*
                      * check each password
                      * if true => login the user
                      * else => alert user
@@ -206,7 +207,7 @@ public class DBUtils extends Controller{
         {
             e.printStackTrace();
         }finally {
-            /**
+            /*
              * close all connections to the db
              */
 

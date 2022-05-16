@@ -1,14 +1,9 @@
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -30,13 +25,13 @@ public class RegistrationController extends Controller implements Initializable 
     @FXML
     private Label labelLicensePlate;
 
-    private ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
-    private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = new String("");
+    private final ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
+    private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = "";
     private int age;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /**
+        /*
          * this part makes sure that only one role can be selected
          * if the user selects the driver role => the client role is deselected automatically and vice-versa
          */
@@ -49,99 +44,82 @@ public class RegistrationController extends Controller implements Initializable 
         radioButtonClient.setSelected(true);
         radioButtonClient.setToggleGroup(toggleGroup);
 
-        radioButtonDriver.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-                if(isNowSelected)
-                {
-                    labelLicensePlate.setVisible(true);
-                    textFieldLicensePlate.setVisible(true);
-                }
-                else
-                {
-                    labelLicensePlate.setVisible(false);
-                    textFieldLicensePlate.setVisible(false);
-                }
+        radioButtonDriver.selectedProperty().addListener((observable, wasPreviouslySelected, isNowSelected) -> {
+            if(isNowSelected)
+            {
+                labelLicensePlate.setVisible(true);
+                textFieldLicensePlate.setVisible(true);
+            }
+            else
+            {
+                labelLicensePlate.setVisible(false);
+                textFieldLicensePlate.setVisible(false);
             }
         });
 
-        textFieldAge.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!newValue.matches("\\*d"))
-                {
-                    textFieldAge.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+        textFieldAge.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("\\*d"))
+            {
+                textFieldAge.setText(newValue.replaceAll("\\D", ""));
             }
         });
 
         comboBoxGender.setItems(genders);
 
 
-        buttonSignup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(!checkEmptyFields())
+        buttonSignup.setOnAction(event -> {
+            if(!checkEmptyFields())
+            {
+                firstName = textFieldFirstName.textProperty().getValue();
+                lastName = textFieldLastName.textProperty().getValue();
+                setName();
+                role = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+                age = Integer.parseInt(textFieldAge.textProperty().getValue());
+                email = textFieldEmail.textProperty().getValue();
+                username = textFieldUsername.textProperty().getValue();
+                password = textFieldPassword.textProperty().getValue();
+                gender = (String)comboBoxGender.getValue();
+                if(role.equals("Driver"))
                 {
-                    firstName = textFieldFirstName.textProperty().getValue();
-                    lastName = textFieldLastName.textProperty().getValue();
-                    setName();
-                    role = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
-                    age = Integer.valueOf(textFieldAge.textProperty().getValue());
-                    email = textFieldEmail.textProperty().getValue();
-                    username = textFieldUsername.textProperty().getValue();
-                    password = textFieldPassword.textProperty().getValue();
-                    gender = (String)comboBoxGender.getValue();
-                    if(role.equals("Driver"))
-                    {
-                        licensePlate = textFieldLicensePlate.textProperty().getValue();
-                    }
-                    else
-                    {
-                        licensePlate = "";
-                    }
-                    System.out.println("Name: "+fullName);
-                    System.out.println("Age: "+age);
-                    System.out.println("Gender: "+gender);
-                    System.out.println("Email: "+email);
-                    System.out.println("Username: "+username+"\nPassword: "+password+"\nRole: "+role);
-                    if(age < 18 && role.equals("Driver"))
-                    {
-                        displayError("You must be at least 18 to register as a driver!");
-                        System.out.println("Error: Invalid age!");
-                    }
-                    else if(!checkValidEmail(email))
-                    {
-                        displayError("The email address you've entered is invalid!");
-                        System.out.println("Error: Invalid email address!");
-                    }
-                    else
-                    {
-                        DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
-                    }
-                }else
-                {
-                    displayError("Please fill all empty fields!");
-                    System.out.println("Not all fields were completed!");
+                    licensePlate = textFieldLicensePlate.textProperty().getValue();
                 }
-                 // check if username and password contain no whitespace
+                else
+                {
+                    licensePlate = "";
+                }
+                System.out.println("Name: "+fullName);
+                System.out.println("Age: "+age);
+                System.out.println("Gender: "+gender);
+                System.out.println("Email: "+email);
+                System.out.println("Username: "+username+"\nPassword: "+password+"\nRole: "+role);
+                if(age < 18 && role.equals("Driver"))
+                {
+                    displayError("You must be at least 18 to register as a driver!");
+                    System.out.println("Error: Invalid age!");
+                }
+                else if(!checkValidEmail(email))
+                {
+                    displayError("The email address you've entered is invalid!");
+                    System.out.println("Error: Invalid email address!");
+                }
+                else
+                {
+                    DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
+                }
+            }else
+            {
+                displayError("Please fill all empty fields!");
+                System.out.println("Not all fields were completed!");
             }
+             // check if username and password contain no whitespace
         });
 
-        buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBUtils.changeScene(event, "main.fxml", "Login", null, null, null, 0, null, null, null);
-            }
-        });
+        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "main.fxml", "Login", null, null, null, 0, null, null, null));
     }
 
     public boolean checkEmptyFields()
     {
-        if(textFieldUsername.textProperty().getValue() == null || textFieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null)
-        {
-            return true;
-        }
+        return textFieldUsername.textProperty().getValue() == null || textFieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null;
        /* if(role.equals("Driver"))
         {
             if(licensePlate.equals(""))
@@ -149,20 +127,16 @@ public class RegistrationController extends Controller implements Initializable 
                 return true;
             }
         }*/
-        return false;
     }
 
     public boolean checkValidEmail(String email)
     {
-        boolean result = true;
+        boolean result;
         final String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
 
-        if(matcher.matches())
-            result = true;
-        else
-            result = false;
+        result = matcher.matches();
         return result;
     }
 
