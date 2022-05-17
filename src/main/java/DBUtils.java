@@ -91,9 +91,9 @@ public class DBUtils extends Controller{
                 psInsert.executeUpdate();
 
                 if(role.equals("Driver"))
-                    changeScene(event, "login_driver.fxml", "Successful login driver", username, role, name, age, gender, email, licensePlate);
+                    changeScene(event, "login_driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
                 else if(role.equals("Client"))
-                    changeScene(event,"login_client.fxml", "Successful login client", username, role, name, age, gender, email, licensePlate);
+                    changeScene(event,"login_client.fxml", "RideShare - Client", username, role, name, age, gender, email, licensePlate);
             }
         }catch (SQLException e)
         {
