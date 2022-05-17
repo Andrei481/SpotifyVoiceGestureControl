@@ -190,9 +190,9 @@ public class DBUtils extends Controller{
                     if(retrievedPassword.equals(password))
                     {
                         if(retrievedRole.equals("Driver"))
-                            changeScene(event, "login_driver.fxml", "Successful login driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
+                            changeScene(event, "login_driver.fxml", "RideShare - Driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                         else if(retrievedRole.equals("Client"))
-                            changeScene(event,"login_client.fxml", "Successful login client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
+                            changeScene(event,"login_client2.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                     }
                     else
                     {

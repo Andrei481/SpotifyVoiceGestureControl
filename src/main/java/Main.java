@@ -8,9 +8,9 @@ import java.util.Objects;
 
 public class Main extends javafx.application.Application{
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main2.fxml")));
         stage.setTitle("RideShare");
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 800, 600));
         stage.show();
     }
 
