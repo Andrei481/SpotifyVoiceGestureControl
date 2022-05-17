@@ -20,12 +20,13 @@
    </rowConstraints>
    <children>
       <Pane style="-fx-background-color: #55FED9;" />
-      <Pane maxWidth="200.0" minWidth="200.0" prefWidth="200.0" style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" />
-      <Pane maxWidth="400.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
-      <Pane maxWidth="200.0" minWidth="200.0" prefWidth="200.0" style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Pane style="-fx-background-color: #55FED9;" GridPane.rowIndex="2" />
+      <Pane style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" />
+      <Pane maxWidth="400.0" minWidth="400.0" prefWidth="400.0" GridPane.columnIndex="2" />
       <Pane style="-fx-background-color: #55FED9;" GridPane.rowIndex="1" />
-      <VBox alignment="CENTER" maxHeight="400.0" maxWidth="200.0" minHeight="400.0" minWidth="200.0" prefHeight="400.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Pane style="-fx-background-color: #55FED9;" GridPane.rowIndex="2" />
+      <Pane style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Pane maxWidth="400.0" minWidth="400.0" prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <VBox alignment="CENTER" maxHeight="400.0" minHeight="400.0" minWidth="200.0" prefHeight="400.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #55FED9;" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label contentDisplay="CENTER" maxWidth="150.0" text="Looking for quick and safe rides?" textAlignment="CENTER" textFill="#655757" wrapText="true">
                <font>
