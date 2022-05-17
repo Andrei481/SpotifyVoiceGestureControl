@@ -37,7 +37,7 @@ public class DBUtils extends Controller{
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(Objects.requireNonNull(root), 600, 600));
+        stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
     }
 
