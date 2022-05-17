@@ -1,6 +1,7 @@
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ public class Main extends javafx.application.Application{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
         stage.setTitle("RideShare");
         stage.setScene(new Scene(root, 800, 600));
+        stage.getIcons().add(new Image("/images/logo177.png"));
         stage.show();
     }
 
