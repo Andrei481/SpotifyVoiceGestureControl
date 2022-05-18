@@ -51,9 +51,10 @@ public class LogInController extends Controller implements Initializable {
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
-        //labelName.setText(name);
-        labelWelcome.setText("WELCOME, " + toUpperCase(name) + "!");
-        //labelRole.setText("Role: " + role);
+        labelName.setText(name);
+        String[] names = name.split(" ", 2);
+        labelWelcome.setText("WELCOME, " + toUpperCase(names[1]) + "!");
+        labelRole.setText("Role: " + role);
 
     }
 }

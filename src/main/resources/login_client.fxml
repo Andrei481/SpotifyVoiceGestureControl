@@ -55,98 +55,89 @@
     <Tab style="-fx-font-size: 18;" text="Profile">
       <VBox alignment="CENTER" spacing="30.0">
          <children>
-            <HBox alignment="CENTER">
+            <GridPane alignment="CENTER" maxWidth="700.0" minWidth="450.0" prefWidth="700.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="295.0" prefWidth="295.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="295.0" prefWidth="295.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="35.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="206.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <VBox alignment="CENTER" spacing="10.0">
+                  <VBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1">
                      <children>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="First name">
+                         <Label text="Full name" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Last name">
+                         <Label text="Age" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Age">
+                         <Label text="Gender" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Gender">
+                         <Label text="Email address" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Email address">
+                         <Label text="Username" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Username">
-                             <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
-                             </font>
-                         </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Password">
-                             <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
-                             </font>
-                         </Label>
-                         <Label prefHeight="22.0" prefWidth="118.0" text="Role">
+                         <Label text="Role" textAlignment="CENTER">
                              <font>
                                  <Font name="Arial Rounded MT Bold" size="17.0" />
                              </font>
                          </Label>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" layoutX="351.0" layoutY="10.0" spacing="10.0">
+                  <Pane maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
+                  <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="3">
                      <children>
-                        <Label fx:id="labelRole" prefHeight="22.0" prefWidth="118.0">
+                        <Label fx:id="labelName" text="Lazarov Andrei">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Last name">
+                        <Label fx:id="labelAge" text="20">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Age">
+                        <Label fx:id="labelGender" text="Male">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Gender">
+                        <Label fx:id="labelMail" text="andrei_lazarov@yahoo.com">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Email address">
+                        <Label fx:id="labelUsername" text="andrei-lazarov">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Username">
+                        <Label fx:id="labelRole" text="Client">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="22.0" prefWidth="118.0" text="Password">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
-                           </font>
-                        </Label>
-                        <Label text="Role: Client">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="19.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                      </children>
                   </VBox>
                </children>
-            </HBox>
+            </GridPane>
                 <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e;" text="Log out" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
