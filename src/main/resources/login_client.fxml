@@ -42,7 +42,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="buttonRequest" mnemonicParsing="false" style="-fx-background-color: #0060FA;" text="Request ride" textFill="WHITE">
+            <Button fx:id="buttonRequest" mnemonicParsing="false" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Button>
@@ -55,6 +55,11 @@
     <Tab style="-fx-font-size: 18;" text="Profile">
       <VBox alignment="CENTER" spacing="30.0">
          <children>
+             <Label text="MY PROFILE" textAlignment="CENTER" textFill="#31c6a3">
+                 <font>
+                     <Font size="24.0" />
+                 </font>
+             </Label>
             <GridPane alignment="CENTER" maxWidth="700.0" minWidth="450.0" prefWidth="700.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="35.0" />
@@ -69,34 +74,34 @@
                <children>
                   <VBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1">
                      <children>
-                         <Label text="Full name" textAlignment="CENTER">
+                         <Label text="Full name" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label text="Age" textAlignment="CENTER">
+                         <Label text="Age" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label text="Gender" textAlignment="CENTER">
+                         <Label text="Gender" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label text="Email address" textAlignment="CENTER">
+                         <Label text="Email address" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label text="Username" textAlignment="CENTER">
+                         <Label text="Username" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
-                         <Label text="Role" textAlignment="CENTER">
+                         <Label text="Role" textAlignment="CENTER" textFill="#655757">
                              <font>
-                                 <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
                      </children>
@@ -104,32 +109,32 @@
                   <Pane maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
                   <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="3">
                      <children>
-                        <Label fx:id="labelName" text="Lazarov Andrei">
+                        <Label fx:id="labelName" text="Last First">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelAge" text="20">
+                        <Label fx:id="labelAge" text="99">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelGender" text="Male">
+                        <Label fx:id="labelGender" text="Male/Female/Other">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelMail" text="andrei_lazarov@yahoo.com">
+                        <Label fx:id="labelEmail" text="sample_email@something.com">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelUsername" text="andrei-lazarov">
+                        <Label fx:id="labelUsername" text="user-name">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelRole" text="Client">
+                        <Label fx:id="labelRole" text="Client/Driver">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -138,7 +143,7 @@
                   </VBox>
                </children>
             </GridPane>
-                <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e;" text="Log out" textFill="WHITE">
+                <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>

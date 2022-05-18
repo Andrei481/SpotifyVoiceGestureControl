@@ -15,20 +15,12 @@ import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
 public class LogInController extends Controller implements Initializable {
     @FXML
-    private Label labelWelcome;
+    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate;
     private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");
     @FXML
-    private ComboBox<String> comboBoxLocation;
+    private ComboBox<String> comboBoxLocation, comboBoxDestination;
     @FXML
-    private ComboBox<String> comboBoxDestination;
-    @FXML
-    private Button buttonRequest;
-    @FXML
-    private Label labelName;
-    @FXML
-    private Label labelRole;
-    @FXML
-    private Button buttonLogout;
+    private Button buttonRequest, buttonLogout;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,10 +43,16 @@ public class LogInController extends Controller implements Initializable {
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
-        labelName.setText(name);
         String[] names = name.split(" ", 2);
         labelWelcome.setText("WELCOME, " + toUpperCase(names[1]) + "!");
-        labelRole.setText("Role: " + role);
+
+        labelName.setText(name);
+        labelAge.setText(Integer.toString(age));
+        labelGender.setText(gender);
+        labelEmail.setText(email);
+        labelUsername.setText(username);
+        //labelPlate.setText(licensePlate);
+        labelRole.setText(role);
 
     }
 }
