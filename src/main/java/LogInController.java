@@ -24,6 +24,8 @@ public class LogInController extends Controller implements Initializable {
     @FXML
     private Button buttonRequest;
     @FXML
+    private Label labelName;
+    @FXML
     private Label labelRole;
     @FXML
     private Button buttonLogout;
@@ -49,7 +51,9 @@ public class LogInController extends Controller implements Initializable {
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
+        //labelName.setText(name);
         labelWelcome.setText("WELCOME, " + toUpperCase(name) + "!");
-        labelRole.setText("Role: " + role);
+        //labelRole.setText("Role: " + role);
+
     }
 }

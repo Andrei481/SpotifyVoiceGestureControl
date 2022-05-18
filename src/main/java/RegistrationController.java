@@ -1,5 +1,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -139,8 +140,8 @@ public class RegistrationController extends Controller implements Initializable 
         result = matcher.matches();
         return result;
     }
-
-    /*public void firstNameEntered(ActionEvent event)
+/*
+    public void firstNameEntered(ActionEvent event)
     {
         firstName = textFieldFirstName.textProperty().getValue();
         System.out.println("First name: "+firstName);
@@ -150,8 +151,8 @@ public class RegistrationController extends Controller implements Initializable 
     {
         lastName = textFieldLastName.textProperty().getValue();
         System.out.println("Last name: "+lastName);
-    }*/
-
+    }
+*/
     public void setName()
     {
         if(firstName != null && lastName != null)

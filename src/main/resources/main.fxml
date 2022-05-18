@@ -40,7 +40,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="buttonSignup" mnemonicParsing="false" style="-fx-background-color: #FFFFFF; -fx-cursor: hand;" text="Sign up" textFill="#0060fa">
+        <Button fx:id="buttonSignup" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" style="-fx-background-color: #FFFFFF; -fx-cursor: hand;" text="Sign up" textFill="#0060fa">
             <font>
                 <Font size="18.0" />
             </font>
@@ -74,7 +74,7 @@
                 </font>
             </PasswordField>
         </VBox>
-        <Button fx:id="buttonLogin" alignment="CENTER" layoutX="138.0" layoutY="319.0" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" prefWidth="125.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Log in" textAlignment="CENTER" textFill="WHITE">
+        <Button fx:id="buttonLogin" alignment="CENTER" layoutX="135.0" layoutY="319.0" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Log in" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
