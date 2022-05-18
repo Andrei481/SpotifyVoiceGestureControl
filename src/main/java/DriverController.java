@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
-public class DriverLoginController extends LoginController implements Initializable {
+public class DriverController extends LoginController implements Initializable {
     @FXML
     private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate;
     private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");

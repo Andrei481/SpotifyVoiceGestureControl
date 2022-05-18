@@ -20,11 +20,11 @@ public class DBUtils extends LoginController {
                 FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
                 root = loader.load();
                 if (role.equals("Client")) {
-                    ClientLoginController clientController = loader.getController();
+                    ClientController clientController = loader.getController();
                     clientController.setUserInfo(username, role, name, age, gender, email, licensePlate);
                 }
                 else {
-                    DriverLoginController driverController = loader.getController();
+                    DriverController driverController = loader.getController();
                     driverController.setUserInfo(username, role, name, age, gender, email, licensePlate);
                 }
             }catch (IOException e)
