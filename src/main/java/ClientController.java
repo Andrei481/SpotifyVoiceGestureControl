@@ -24,9 +24,11 @@ public class ClientController extends LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // REQUEST TAB
         comboBoxLocation.setItems(locations);
         comboBoxDestination.setItems(locations);
-        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
+
         buttonRequest.setOnAction(event -> {
             if ((comboBoxLocation.getValue() == null) || (comboBoxDestination.getValue() == null)) {
                 displayError("Please fill in your location and desired destination.");
@@ -36,22 +38,30 @@ public class ClientController extends LoginController implements Initializable {
                 displayError("Can't request ride to the same location!");
                 System.out.println("Error: Same location!");
             }
-
-
         });
+
+        // HISTORY TAB
+
+
+        // PROFILE TAB
+        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
     }
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
+        // REQUEST TAB
         String[] names = name.split(" ", 2);
         labelWelcome.setText("WELCOME, " + toUpperCase(names[1]) + "!");
 
+        // HISTORY TAB
+
+
+        // PROFILE TAB
         labelName.setText(name);
         labelAge.setText(Integer.toString(age));
         labelGender.setText(gender);
         labelEmail.setText(email);
         labelUsername.setText(username);
-        //labelPlate.setText(licensePlate);
         labelRole.setText(role);
 
     }
