@@ -14,11 +14,11 @@
             </font>
          </Label>
             <ListView fx:id="listRides" maxHeight="300.0" maxWidth="400.0" />
-         <Label text="Start Ride">
+            <Label fx:id="labelSelectedRide" text="Selected ride: X to Y" />
+         <Button fx:id="buttonStart" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Start ride" textFill="WHITE">
             <font>
-               <Font name="Arial Rounded MT Bold" size="19.0" />
-            </font>
-         </Label>
+               <Font name="System Bold" size="18.0" />
+            </font></Button>
       </children>
    </VBox>
 </Tab>

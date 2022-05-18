@@ -42,7 +42,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="buttonRequest" mnemonicParsing="false" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
+            <Button fx:id="buttonRequest" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Button>
