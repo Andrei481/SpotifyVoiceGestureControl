@@ -17,7 +17,7 @@ public class RegistrationController extends Controller implements Initializable 
     @FXML
     private TextField textFieldUsername, textFieldPassword, textFieldFirstName, textFieldLastName, textFieldAge, textFieldEmail, textFieldLicensePlate;
     @FXML
-    private ComboBox comboBoxGender;
+    private ComboBox<String> comboBoxGender;
     @FXML
     private RadioButton radioButtonDriver;
     @FXML
@@ -78,7 +78,7 @@ public class RegistrationController extends Controller implements Initializable 
                 email = textFieldEmail.textProperty().getValue();
                 username = textFieldUsername.textProperty().getValue();
                 password = textFieldPassword.textProperty().getValue();
-                gender = (String)comboBoxGender.getValue();
+                gender = comboBoxGender.getValue();
                 if(role.equals("Driver"))
                 {
                     licensePlate = textFieldLicensePlate.textProperty().getValue();
