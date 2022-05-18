@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Objects;
 
-public class DBUtils extends Controller{
+public class DBUtils extends LoginController {
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         Parent root = null;
@@ -19,8 +19,14 @@ public class DBUtils extends Controller{
             try{
                 FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
                 root = loader.load();
-                LogInController logInController = loader.getController();
-                logInController.setUserInfo(username, role, name, age, gender, email, licensePlate);
+                if (role.equals("Client")) {
+                    ClientLoginController clientController = loader.getController();
+                    clientController.setUserInfo(username, role, name, age, gender, email, licensePlate);
+                }
+                else {
+                    DriverLoginController driverController = loader.getController();
+                    driverController.setUserInfo(username, role, name, age, gender, email, licensePlate);
+                }
             }catch (IOException e)
             {
                 e.printStackTrace();
@@ -91,9 +97,9 @@ public class DBUtils extends Controller{
                 psInsert.executeUpdate();
 
                 if(role.equals("Driver"))
-                    changeScene(event, "login_driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
+                    changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
                 else if(role.equals("Client"))
-                    changeScene(event,"login_client.fxml", "RideShare - Client", username, role, name, age, gender, email, licensePlate);
+                    changeScene(event, "client.fxml", "RideShare - Client", username, role, name, age, gender, email, licensePlate);
             }
         }catch (SQLException e)
         {
@@ -190,9 +196,9 @@ public class DBUtils extends Controller{
                     if(retrievedPassword.equals(password))
                     {
                         if(retrievedRole.equals("Driver"))
-                            changeScene(event, "login_driver.fxml", "RideShare - Driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
+                            changeScene(event, "driver.fxml", "RideShare - Driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                         else if(retrievedRole.equals("Client"))
-                            changeScene(event,"login_client.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
+                            changeScene(event, "client.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedPlate);
                     }
                     else
                     {

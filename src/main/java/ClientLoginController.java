@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
-public class LogInController extends Controller implements Initializable {
+public class ClientLoginController extends LoginController implements Initializable {
     @FXML
     private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate;
     private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");
@@ -26,7 +26,7 @@ public class LogInController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         comboBoxLocation.setItems(locations);
         comboBoxDestination.setItems(locations);
-        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "main.fxml", "RideShare", null, null, null, 0, null, null, null));
+        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
         buttonRequest.setOnAction(event -> {
             if ((comboBoxLocation.getValue() == null) || (comboBoxDestination.getValue() == null)) {
                 displayError("Please fill in your location and desired destination.");

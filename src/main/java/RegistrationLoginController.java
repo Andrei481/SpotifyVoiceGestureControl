@@ -1,6 +1,5 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,7 +9,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationController extends Controller implements Initializable {
+public class RegistrationLoginController extends LoginController implements Initializable {
     @FXML
     private Button buttonSignup;
     @FXML
@@ -115,7 +114,7 @@ public class RegistrationController extends Controller implements Initializable 
              // check if username and password contain no whitespace
         });
 
-        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "main.fxml", "RideShare", null, null, null, 0, null, null, null));
+        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
     }
 
     public boolean checkEmptyFields()
