@@ -15,7 +15,7 @@ public class DriverController extends LoginController implements Initializable {
     private Button buttonStart, buttonLogout;
     @FXML
     private ListView<String> listRides;
-    private final ObservableList<String> rides = FXCollections.observableArrayList ("A ⟶ B", "C ⟶ A", "D ⟶ B", "B ⟶ C");
+    private final ObservableList<String> rides = FXCollections.observableArrayList ("A ⟶ B, Lazarov Andrei, 0750123456", "C ⟶ A", "D ⟶ B", "B ⟶ C");
             // import rides from database here...
 
     @Override
@@ -34,9 +34,6 @@ public class DriverController extends LoginController implements Initializable {
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         // RIDES TAB
-        String[] names = name.split(" ", 2);
-        labelWelcome.setText("WELCOME, " + toUpperCase(names[1]) + "!");
-
         listRides.setItems(rides);
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> labelSelectedRide.setText(new_val));

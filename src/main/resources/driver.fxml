@@ -6,14 +6,14 @@
 
 <TabPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="30.0" tabMaxWidth="100.0" tabMinHeight="30.0" tabMinWidth="100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DriverController">
 <Tab style="-fx-font-size: 18;" text="Rides">
-   <VBox alignment="CENTER" spacing="50.0">
+   <VBox alignment="CENTER" spacing="30.0">
       <children>
-         <Label fx:id="labelWelcome" alignment="CENTER" contentDisplay="CENTER" text="WELCOME, FIRSTNAME!" textAlignment="CENTER" textFill="#31c6a3">
+         <Label alignment="CENTER" contentDisplay="CENTER" text="AVAILABLE RIDES" textAlignment="CENTER" textFill="#31c6a3">
             <font>
                <Font size="24.0" />
             </font>
          </Label>
-            <ListView fx:id="listRides" maxHeight="300.0" maxWidth="400.0" />
+            <ListView fx:id="listRides" maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="300.0" prefWidth="400.0" style="-fx-font-size: 18;" />
             <Label fx:id="labelSelectedRide" text="Selected ride: X to Y" />
          <Button fx:id="buttonStart" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Start ride" textFill="WHITE">
             <font>
@@ -23,7 +23,16 @@
    </VBox>
 </Tab>
 <Tab style="-fx-font-size: 18;" text="History">
-   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+   <VBox alignment="CENTER" spacing="30.0">
+      <children>
+         <Label alignment="CENTER" contentDisplay="CENTER" text="PAST RIDES" textAlignment="CENTER" textFill="#31c6a3">
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Label>
+         <ListView maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="300.0" prefWidth="400.0" style="-fx-font-size: 18;" />
+      </children>
+   </VBox>
 </Tab>
 <Tab style="-fx-font-size: 18;" text="Profile">
    <VBox alignment="CENTER" spacing="30.0">
