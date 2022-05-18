@@ -28,7 +28,7 @@ public class DriverController extends LoginController implements Initializable {
 
 
         // PROFILE TAB
-        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
+        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
     }
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)

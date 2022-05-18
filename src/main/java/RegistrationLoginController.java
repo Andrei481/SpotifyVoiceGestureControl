@@ -104,7 +104,15 @@ public class RegistrationLoginController extends LoginController implements Init
                 }
                 else
                 {
-                    DBUtils.registerUser(event, username, password, role, fullName, age, gender, email, licensePlate);
+                    //DBUtils.registerUser(event, username, password, role, fullName, age, gender, email);
+                    if(role.equals("Client"))
+                    {
+                        DBUtils.registerClient(event, username, password, role, fullName, age, gender, email);
+                    }
+                    else if(role.equals("Driver"))
+                    {
+                        DBUtils.registerDriver(event, username, password, role, fullName, age, gender, email, licensePlate);
+                    }
                 }
             }else
             {
@@ -114,7 +122,7 @@ public class RegistrationLoginController extends LoginController implements Init
              // check if username and password contain no whitespace
         });
 
-        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
+        buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
     }
 
     public boolean checkEmptyFields()

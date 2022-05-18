@@ -44,10 +44,10 @@ public class ClientController extends LoginController implements Initializable {
 
 
         // PROFILE TAB
-        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null, null));
+        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
     }
 
-    public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
+    public void setUserInfo(String username, String role, String name, int age, String gender, String email)
     {
         // REQUEST TAB
         String[] names = name.split(" ", 2);
