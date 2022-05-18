@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -10,7 +8,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class LoginController implements Initializable {
     @FXML
     private Button buttonLogin;
     @FXML
@@ -22,19 +20,8 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBUtils.loginUser(event, textFieldUsername.getText(), passwordField.getText());
-            }
-        });
-
-        buttonSignup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBUtils.changeScene(event, "register.fxml", "Signup", null, null, null, 0, null, null, null);
-            }
-        });
+        buttonLogin.setOnAction(event -> DBUtils.loginUser(event, textFieldUsername.getText(), passwordField.getText()));
+        buttonSignup.setOnAction(event -> DBUtils.changeScene(event, "register.fxml", "RideShare - Sign up", null, null, null, 0, null, null));
     }
 
     public void displayError(String errorMessage)

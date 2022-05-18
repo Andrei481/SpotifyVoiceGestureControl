@@ -1,19 +1,18 @@
-import java.io.IOException;
-
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends javafx.application.Application{
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml")));
         stage.setTitle("RideShare");
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 800, 600));
+        stage.getIcons().add(new Image("/images/logo177.png"));
         stage.show();
     }
 
