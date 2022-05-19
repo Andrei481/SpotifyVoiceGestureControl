@@ -11,20 +11,15 @@ import java.util.regex.Pattern;
 
 public class RegistrationLoginController extends LoginController implements Initializable {
     @FXML
-    private Button buttonSignup;
-    @FXML
-    private Button buttonLogin;
+    private Button buttonSignup, buttonLogin;
     @FXML
     private TextField textFieldUsername, textFieldPassword, textFieldFirstName, textFieldLastName, textFieldAge, textFieldEmail, textFieldLicensePlate;
     @FXML
     private ComboBox<String> comboBoxGender;
     @FXML
-    private RadioButton radioButtonDriver;
-    @FXML
-    private RadioButton radioButtonClient;
+    private RadioButton radioButtonDriver, radioButtonClient;
     @FXML
     private Label labelLicensePlate;
-
     private final ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
     private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = "";
     private int age;

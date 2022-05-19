@@ -1,5 +1,3 @@
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import util.Ride;
-
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
@@ -19,7 +16,7 @@ import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
 public class ClientController extends LoginController implements Initializable {
     @FXML
-    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate;
+    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole;
     private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");
     @FXML
     private ComboBox<String> comboBoxLocation, comboBoxDestination;
@@ -29,6 +26,8 @@ public class ClientController extends LoginController implements Initializable {
     private String chosenLocation, chosenDestination;
     private Ride ride;
     private static ObservableList<String> rideList = FXCollections.observableArrayList();
+    private boolean emptyLocation = true;
+    private boolean emptyDestination = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,20 +36,18 @@ public class ClientController extends LoginController implements Initializable {
         comboBoxLocation.setItems(locations);
         comboBoxDestination.setItems(locations);
 
-        comboBoxLocation.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                chosenLocation = newValue;
-                System.out.println("Chosen Location: "+chosenLocation);
-            }
+        comboBoxLocation.valueProperty().addListener((observable, oldValue, newValue) -> {
+            chosenLocation = newValue;
+            emptyLocation = chosenLocation.equals("");
+            buttonRequest.setDisable((emptyLocation) || (emptyDestination));
+            System.out.println("Chosen Location: "+chosenLocation);
         });
 
-        comboBoxDestination.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                chosenDestination = newValue;
-                System.out.println("Chosen Destination: "+chosenDestination);
-            }
+        comboBoxDestination.valueProperty().addListener((observable, oldValue, newValue) -> {
+            chosenDestination = newValue;
+            emptyDestination = chosenDestination.equals("");
+            buttonRequest.setDisable((emptyLocation) || (emptyDestination));
+            System.out.println("Chosen Destination: "+chosenDestination);
         });
 
         buttonRequest.setOnAction(event -> {
