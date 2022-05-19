@@ -8,8 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import util.Ride;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -22,14 +22,15 @@ public class DriverController extends LoginController implements Initializable {
     private Button buttonStart, buttonLogout;
     @FXML
     private ListView<String> listRides;
-    private final ObservableList<String> rides = FXCollections.observableArrayList ("A ⟶ B, Lazarov Andrei, 0750123456", "C ⟶ A", "D ⟶ B", "B ⟶ C");
+    private ObservableList<String> rides = FXCollections.observableArrayList();
             // import rides from database here...
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // RIDES TAB
-        listRides.setItems(rides);
+        DBUtils.checkAvailableRides();
+        listRides.setItems(DBUtils.getAvailableRidesList());
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> {
                     labelSelectedRide.setText("Selected ride:" + '\n' + new_val);
@@ -41,14 +42,14 @@ public class DriverController extends LoginController implements Initializable {
 
 
         // PROFILE TAB
-        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
-
+        buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare"));
     }
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         // RIDES TAB
         buttonStart.setOnAction(event -> startRide(event, username, role, name, age, gender, email, licensePlate));
+
 
         // HISTORY TAB
 

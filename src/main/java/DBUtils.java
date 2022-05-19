@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -6,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import util.Ride;
 
 import javax.management.Query;
 import java.io.IOException;
@@ -13,7 +17,9 @@ import java.sql.*;
 import java.util.Objects;
 
 public class DBUtils extends LoginController {
-    private static int userID = 0;
+    private static int currentLoggedInUserID;
+
+    private static ObservableList<String> rides = FXCollections.observableArrayList();
 
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email)
     {
@@ -73,103 +79,21 @@ public class DBUtils extends LoginController {
         stage.setTitle(title);
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
+        //checkAvailableRides(event);
     }
 
-    public static void registerUser(ActionEvent event, String username, String password, String role, String name, int age, String gender, String email)
-    {
-        /*
-          these variables are the connections to the mysql database
-          */
-
-        Connection connection = null;
-        PreparedStatement psInsert = null;
-        PreparedStatement psCheckUserAlreadyExists = null;
-        //PreparedStatement psCheckEmailAlreadyUsed = null;
-        ResultSet resultSet = null;
-
-        try{
-            /*
-              this will attempt to establish a connection with the db
-              */
-
-            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
-            psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM database_user WHERE username = ?");
-            psCheckUserAlreadyExists.setString(1, username);
-            //psCheckEmailAlreadyUsed = connection.prepareStatement("SELECT * FROM user_database WHERE email = ? ");
-            //psCheckEmailAlreadyUsed.setString(7, email);
-            resultSet = psCheckUserAlreadyExists.executeQuery();
-
-            /*
-              check if the resultSet is empty
-              if true => username already taken => notify user about this
-             */
-
-            if(resultSet.isBeforeFirst())
-            {
-                System.out.println("Username already taken!");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("User already exists!");
-                alert.showAndWait();
-            }
-            else
-            {
-                psInsert = connection.prepareStatement("INSERT INTO database_user (username, password, role, name, age, gender, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                psInsert.setString(1, username);
-                psInsert.setString(2, password);
-                psInsert.setString(3, role);
-                psInsert.setString(4, name);
-                psInsert.setInt(5, age);
-                psInsert.setString(6, gender);
-                psInsert.setString(7, email);
-                psInsert.executeUpdate();
-
-                //if(role.equals("Client"))
-                   // changeScene(event, "client.fxml", "RideShare - Client", username, role, name, age, gender, email);
-            }
-        }catch (SQLException e)
+    public static void changeScene(ActionEvent event, String fxmlFile, String title){
+        try {
+            Parent root = null;
+            FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
+            root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle(title);
+            stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
+            stage.show();
+        }catch (IOException e)
         {
             e.printStackTrace();
-        }finally {
-            /*
-              close db connections to avoid memory leaks
-              */
-
-            if(resultSet != null)
-            {
-                try{
-                    resultSet.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if(psCheckUserAlreadyExists != null)
-            {
-                try{
-                    psCheckUserAlreadyExists.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if(psInsert != null)
-            {
-                try {
-                    psInsert.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if(connection != null)
-            {
-                try{
-                    connection.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -228,8 +152,11 @@ public class DBUtils extends LoginController {
                 int uid = rs.getInt(1);
                 System.out.println(uid);
                 insertIntoClientDatabase(event, uid, false, null, null, 0);
-
-                changeScene(event, "client.fxml", "RideShare - Client", username, role, name, age, gender, email);
+                System.out.println("Client registered successfully!");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Registration completed! Welcome to Rideshare!");
+                alert.showAndWait();
+                changeScene(event, "login.fxml", "RideShare");
             }
         }catch (SQLException e)
         {
@@ -346,8 +273,12 @@ public class DBUtils extends LoginController {
                 rs.next();
                 int uid = rs.getInt(1);
                 System.out.println(uid);
-                insertIntoDriverDatabase(event, uid, null, false, 0);
-                changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
+                insertIntoDriverDatabase(event, uid, licensePlate, false, 0);
+                System.out.println("Driver registered successfully!");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Registration completed! Welcome to Rideshare!");
+                alert.showAndWait();
+                changeScene(event, "login.fxml", "RideShare");
             }
         }catch (SQLException e)
         {
@@ -414,7 +345,7 @@ public class DBUtils extends LoginController {
 
         try{
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
-            preparedStatement = connection.prepareStatement("SELECT password, role, name, age, gender, email FROM database_user WHERE username = ?");
+            preparedStatement = connection.prepareStatement("SELECT user_id, password, role, name, age, gender, email FROM database_user WHERE username = ?");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
 
@@ -439,23 +370,36 @@ public class DBUtils extends LoginController {
                  */
                 while(resultSet.next())
                 {
+                    int retrievedUserID = resultSet.getInt("user_id");
                     String retrievedPassword = resultSet.getString("password");
                     String retrievedRole = resultSet.getString("role");
                     String retrievedName = resultSet.getString("name");
                     int retrievedAge = resultSet.getInt("age");
                     String retrievedGender = resultSet.getString("gender");
                     String retrievedEmail = resultSet.getString("email");
-                    //String retrievedPlate = resultSet.getString("license_plate");
-                    /*
-                     * check each password
-                     * if true => login the user
-                     * else => alert user
-                     */
+
+                    currentLoggedInUserID = retrievedUserID;
+
                     if(retrievedPassword.equals(password)) {
+                        System.out.println("Current user id: "+currentLoggedInUserID);
                         if (retrievedRole.equals("Client"))
                             changeScene(event, "client.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail);
                         else if (retrievedRole.equals("Driver")) {
-                            changeScene(event, "driver.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, "NR GOL");
+                            PreparedStatement psDriver = connection.prepareStatement("SELECT license_plate FROM database_driver WHERE user_id = ?");
+                            psDriver.setInt(1, retrievedUserID);
+                            ResultSet rs = psDriver.executeQuery();
+                            if (!rs.isBeforeFirst()) {
+                                System.out.println("Driver not found in the database");
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setContentText("Driver not found.");
+                                alert.show();
+                            } else {
+                                while (rs.next()) {
+                                    String retrievedLicensePlate = rs.getString("license_plate");
+                                    changeScene(event, "driver.fxml", "RideShare - Driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedLicensePlate);
+                                    //checkAvailableRides(event);
+                                }
+                            }
                         }
                     }
                     else
@@ -694,5 +638,172 @@ public class DBUtils extends LoginController {
                 }
             }
         }
+    }
+
+    public static void requestRideClient(ActionEvent event, int user_id, String location, String destination)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement psUpdate = null;
+        PreparedStatement psInsert = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT ride_requested, location, destination FROM database_client WHERE user_id = ?");
+            preparedStatement.setInt(1, user_id);
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.isBeforeFirst())
+            {
+                System.out.println("Client not found!");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Client not registered.");
+                alert.show();
+            }
+            else
+            {
+                psUpdate= connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ? WHERE user_id = ?");
+                psUpdate.setBoolean(1, true);
+                psUpdate.setString(2, location);
+                psUpdate.setString(3, destination);
+                psUpdate.setInt(4, user_id);
+                psUpdate.executeUpdate();
+
+                psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
+                psInsert.setString(1, location);
+                psInsert.setString(2, destination);
+                psInsert.setInt(3, user_id);
+                psInsert.setInt(4, 0);
+                psInsert.setBoolean(5, false);
+                psInsert.executeUpdate();
+            }
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }finally {
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try{
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdate != null)
+            {
+                try {
+                    psUpdate.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psInsert != null)
+            {
+                try {
+                    psInsert.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try{
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void checkAvailableRides() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT location, destination, requesting_client_id FROM database_rides WHERE accepted_driver_id = ?");
+            preparedStatement.setInt(1, 0); // check rides that have driver_id 0
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("No available rides");
+               // return null;
+            }
+            else
+            {
+                while(resultSet.next())
+                {
+                    String retrievedLocation = resultSet.getString("location");
+                    String retrievedDestination = resultSet.getString("destination");
+                    int retrievedClientId = resultSet.getInt("requesting_client_id");
+
+                    Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
+                    rides.add(ride.toString());
+
+                }
+                //return rides;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            /*
+             * close all connections to the db
+             */
+
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try{
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try {
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //return null;
+    }
+
+    public static ObservableList<String> getAvailableRidesList()
+    {
+        return rides;
+    }
+
+    public static int getCurrentLoggedInUserID()
+    {
+        return currentLoggedInUserID;
     }
 }
