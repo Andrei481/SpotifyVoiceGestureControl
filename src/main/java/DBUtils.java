@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -6,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import util.Ride;
 
 import javax.management.Query;
 import java.io.IOException;
@@ -14,6 +18,8 @@ import java.util.Objects;
 
 public class DBUtils extends LoginController {
     private static int currentLoggedInUserID;
+
+    private static ObservableList<String> rides = FXCollections.observableArrayList();
 
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email)
     {
@@ -73,6 +79,7 @@ public class DBUtils extends LoginController {
         stage.setTitle(title);
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
+        //checkAvailableRides(event);
     }
 
     public static void changeScene(ActionEvent event, String fxmlFile, String title){
@@ -390,7 +397,7 @@ public class DBUtils extends LoginController {
                                 while (rs.next()) {
                                     String retrievedLicensePlate = rs.getString("license_plate");
                                     changeScene(event, "driver.fxml", "RideShare - Driver", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail, retrievedLicensePlate);
-
+                                    //checkAvailableRides(event);
                                 }
                             }
                         }
@@ -638,6 +645,7 @@ public class DBUtils extends LoginController {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         PreparedStatement psUpdate = null;
+        PreparedStatement psInsert = null;
         ResultSet resultSet = null;
 
         try {
@@ -661,6 +669,14 @@ public class DBUtils extends LoginController {
                 psUpdate.setString(3, destination);
                 psUpdate.setInt(4, user_id);
                 psUpdate.executeUpdate();
+
+                psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
+                psInsert.setString(1, location);
+                psInsert.setString(2, destination);
+                psInsert.setInt(3, user_id);
+                psInsert.setInt(4, 0);
+                psInsert.setBoolean(5, false);
+                psInsert.executeUpdate();
             }
         }catch (SQLException e)
         {
@@ -693,6 +709,15 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
+            if(psInsert != null)
+            {
+                try {
+                    psInsert.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
             if(connection != null)
             {
                 try{
@@ -703,6 +728,78 @@ public class DBUtils extends LoginController {
                 }
             }
         }
+    }
+
+    public static void checkAvailableRides() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT location, destination, requesting_client_id FROM database_rides WHERE accepted_driver_id = ?");
+            preparedStatement.setInt(1, 0); // check rides that have driver_id 0
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("No available rides");
+               // return null;
+            }
+            else
+            {
+                while(resultSet.next())
+                {
+                    String retrievedLocation = resultSet.getString("location");
+                    String retrievedDestination = resultSet.getString("destination");
+                    int retrievedClientId = resultSet.getInt("requesting_client_id");
+
+                    Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
+                    rides.add(ride.toString());
+
+                }
+                //return rides;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            /*
+             * close all connections to the db
+             */
+
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try{
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try {
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //return null;
+    }
+
+    public static ObservableList<String> getAvailableRidesList()
+    {
+        return rides;
     }
 
     public static int getCurrentLoggedInUserID()

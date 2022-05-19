@@ -7,8 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import util.Ride;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -25,6 +27,8 @@ public class ClientController extends LoginController implements Initializable {
     private Button buttonRequest, buttonLogout;
 
     private String chosenLocation, chosenDestination;
+    private Ride ride;
+    private static ObservableList<String> rideList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,8 +62,11 @@ public class ClientController extends LoginController implements Initializable {
                 System.out.println("Error: Same location!");
             }
             else{
+                ride = new Ride(DBUtils.getCurrentLoggedInUserID(), chosenLocation, chosenDestination);
                 System.out.println("Requesting ride from: "+chosenLocation +" to "+chosenDestination+" for client "+DBUtils.getCurrentLoggedInUserID());
+                System.out.println("Ride: " + ride);
                 DBUtils.requestRideClient(event, DBUtils.getCurrentLoggedInUserID(), chosenLocation, chosenDestination);
+                rideList.add(ride.toString());
             }
         });
 
@@ -86,6 +93,9 @@ public class ClientController extends LoginController implements Initializable {
         labelEmail.setText(email);
         labelUsername.setText(username);
         labelRole.setText(role);
-
+    }
+    public static ObservableList<String> getRideList()
+    {
+        return rideList;
     }
 }

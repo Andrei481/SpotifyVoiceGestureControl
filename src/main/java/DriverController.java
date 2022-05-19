@@ -3,6 +3,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import util.Ride;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,15 +17,15 @@ public class DriverController extends LoginController implements Initializable {
     private Button buttonStart, buttonLogout;
     @FXML
     private ListView<String> listRides;
-    private final ObservableList<String> rides = FXCollections.observableArrayList ("A ⟶ B, Lazarov Andrei, 0750123456", "C ⟶ A", "D ⟶ B", "B ⟶ C");
+    private ObservableList<String> rides = FXCollections.observableArrayList();
             // import rides from database here...
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // RIDES TAB
-
-
+        DBUtils.checkAvailableRides();
+        listRides.setItems(DBUtils.getAvailableRidesList());
         // HISTORY TAB
 
 
@@ -34,7 +36,7 @@ public class DriverController extends LoginController implements Initializable {
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         // RIDES TAB
-        listRides.setItems(rides);
+        //listRides.setItems(ClientController.getRideList());
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> labelSelectedRide.setText(new_val));
 
