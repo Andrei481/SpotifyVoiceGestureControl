@@ -98,27 +98,27 @@
                   <children>
                      <Label fx:id="labelName" text="Last First">
                         <font>
-                           <Font name="Arial Rounded MT Bold" size="17.0" />
+                           <Font size="17.0" />
                         </font>
                      </Label>
                      <Label fx:id="labelAge" text="99">
                         <font>
-                           <Font name="Arial Rounded MT Bold" size="17.0" />
+                           <Font size="17.0" />
                         </font>
                      </Label>
                      <Label fx:id="labelGender" text="Male/Female/Other">
                         <font>
-                           <Font name="Arial Rounded MT Bold" size="17.0" />
+                           <Font size="17.0" />
                         </font>
                      </Label>
                      <Label fx:id="labelEmail" text="sample_email@something.com">
                         <font>
-                           <Font name="Arial Rounded MT Bold" size="17.0" />
+                           <Font size="17.0" />
                         </font>
                      </Label>
                      <Label fx:id="labelUsername" text="user-name">
                         <font>
-                           <Font name="Arial Rounded MT Bold" size="17.0" />
+                           <Font size="17.0" />
                         </font>
                      </Label>
                      <Label fx:id="labelRole" text="Client/Driver">
