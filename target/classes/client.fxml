@@ -42,7 +42,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="buttonRequest" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
+            <Button fx:id="buttonRequest" defaultButton="true" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Button>
@@ -152,7 +152,7 @@
                   </VBox>
                </children>
             </GridPane>
-                <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
+                <Button fx:id="buttonLogout" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>

@@ -15,7 +15,15 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class DriverRideController {
+public class DriverRideController extends DriverController implements Initializable {
 
+    @FXML
     public Label labelWaitsAt;
+    @FXML
+    private Button buttonCancel, buttonArrived;
+
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }
+

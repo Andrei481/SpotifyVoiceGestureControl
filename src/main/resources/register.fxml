@@ -140,7 +140,7 @@
             </HBox>
             <HBox alignment="CENTER" spacing="50.0">
                <children>
-                    <Button fx:id="buttonLogin" alignment="CENTER" cancelButton="true" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" style="-fx-background-color: ##d6d6d6; -fx-cursor: hand;" text="Back" textFill="#575757">
+                    <Button fx:id="buttonLogin" alignment="CENTER" cancelButton="true" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" style="-fx-background-color: #d6d6d6; -fx-cursor: hand;" text="Back" textFill="#575757">
                         <font>
                             <Font name="System Bold" size="18.0" />
                         </font>

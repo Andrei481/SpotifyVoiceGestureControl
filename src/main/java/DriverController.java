@@ -15,8 +15,6 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
-
 public class DriverController extends LoginController implements Initializable {
     @FXML
     private Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
@@ -27,10 +25,17 @@ public class DriverController extends LoginController implements Initializable {
     private final ObservableList<String> rides = FXCollections.observableArrayList ("A ⟶ B, Lazarov Andrei, 0750123456", "C ⟶ A", "D ⟶ B", "B ⟶ C");
             // import rides from database here...
 
+    private String selectedRide;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // RIDES TAB
+        listRides.setItems(rides);
+        listRides.getSelectionModel().selectedItemProperty().addListener(
+                (ov, old_val, new_val) -> labelSelectedRide.setText("Selected ride:" + '\n' + new_val));
+        labelSelectedRide.textProperty().addListener(
+                (ov, old_val, new_val) -> buttonStart.setDisable(false));
         buttonStart.setOnAction(event -> startRide(event));
 
         // HISTORY TAB
@@ -43,9 +48,7 @@ public class DriverController extends LoginController implements Initializable {
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         // RIDES TAB
-        listRides.setItems(rides);
-        listRides.getSelectionModel().selectedItemProperty().addListener(
-                (ov, old_val, new_val) -> labelSelectedRide.setText(new_val));
+
 
         // HISTORY TAB
 
@@ -62,6 +65,7 @@ public class DriverController extends LoginController implements Initializable {
 
     public void startRide(ActionEvent event)
     {
+        //if (labelSelectedRide.getText().equals("Please select a ride"))
 
         Parent root = null;
         try{
