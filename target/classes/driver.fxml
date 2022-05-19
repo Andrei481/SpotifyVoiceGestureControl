@@ -14,7 +14,7 @@
             </font>
          </Label>
             <ListView fx:id="listRides" maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="250.0" prefWidth="400.0" style="-fx-font-size: 18;" />
-            <Label fx:id="labelSelectedRide" text="Please select a ride" textAlignment="CENTER">
+            <Label fx:id="labelSelectedRide" alignment="CENTER" contentDisplay="CENTER" text="Please select a ride" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font></Label>

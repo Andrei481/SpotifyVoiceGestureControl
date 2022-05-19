@@ -24,6 +24,12 @@ public class DriverRideController extends DriverController implements Initializa
 
     public void initialize(URL location, ResourceBundle resources) {
 
+        buttonCancel.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", null, null, null, 0, null, null));
+        buttonArrived.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare", null, null, null, 0, null, null));
+    }
+
+    public void startScene () {
+
     }
 }
 
