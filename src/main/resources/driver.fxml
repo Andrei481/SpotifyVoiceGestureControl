@@ -13,9 +13,12 @@
                <Font size="24.0" />
             </font>
          </Label>
-            <ListView fx:id="listRides" maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="300.0" prefWidth="400.0" style="-fx-font-size: 18;" />
-            <Label fx:id="labelSelectedRide" text="Selected ride: X to Y" />
-         <Button fx:id="buttonStart" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Start ride" textFill="WHITE">
+            <ListView fx:id="listRides" maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="250.0" prefWidth="400.0" style="-fx-font-size: 18;" />
+            <Label fx:id="labelSelectedRide" alignment="CENTER" contentDisplay="CENTER" text="Please select a ride" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+         <Button fx:id="buttonStart" defaultButton="true" disable="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Start ride" textFill="WHITE">
             <font>
                <Font name="System Bold" size="18.0" />
             </font></Button>
@@ -135,7 +138,7 @@
                </VBox>
             </children>
          </GridPane>
-         <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
+         <Button fx:id="buttonLogout" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
             <font>
                <Font name="System Bold" size="18.0" />
             </font>
