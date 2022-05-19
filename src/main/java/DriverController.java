@@ -1,16 +1,25 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
 public class DriverController extends LoginController implements Initializable {
     @FXML
-    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
+    private Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
     @FXML
     private Button buttonStart, buttonLogout;
     @FXML
@@ -22,7 +31,7 @@ public class DriverController extends LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         // RIDES TAB
-
+        buttonStart.setOnAction(event -> startRide(event));
 
         // HISTORY TAB
 
@@ -38,10 +47,7 @@ public class DriverController extends LoginController implements Initializable {
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> labelSelectedRide.setText(new_val));
 
-
-
         // HISTORY TAB
-
 
         // PROFILE TAB
         labelName.setText(name);
@@ -52,5 +58,26 @@ public class DriverController extends LoginController implements Initializable {
         labelRole.setText(role);
         labelPlate.setText(licensePlate);
 
+    }
+
+    public void startRide(ActionEvent event)
+    {
+
+        Parent root = null;
+        try{
+            FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
+            root = loader.load();
+            DriverRideController driverRideController = loader.getController();
+            driverRideController.labelWaitsAt.setText("Your client waits at location " + labelSelectedRide.getText());
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("RideShare - Ride started");
+        stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
+        stage.show();
     }
 }
