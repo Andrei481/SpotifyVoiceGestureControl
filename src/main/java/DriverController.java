@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class DriverController extends LoginController implements Initializable {
     @FXML
-    private Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
+    public Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
     @FXML
     private Button buttonStart, buttonLogout;
     @FXML
@@ -35,19 +35,21 @@ public class DriverController extends LoginController implements Initializable {
                     labelSelectedRide.setText("Selected ride:" + '\n' + new_val);
                     buttonStart.setDisable(false);
                 });
-        //labelSelectedRide.textProperty().addListener(
-        //        (ov, old_val, new_val) -> buttonStart.setDisable(false));
-        buttonStart.setOnAction(event -> startRide(event));
+
 
         // HISTORY TAB
 
 
         // PROFILE TAB
         buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
+
     }
 
     public void setUserInfo(String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
+        // RIDES TAB
+        buttonStart.setOnAction(event -> startRide(event, username, role, name, age, gender, email, licensePlate));
+
         // HISTORY TAB
 
         // PROFILE TAB
@@ -61,7 +63,7 @@ public class DriverController extends LoginController implements Initializable {
 
     }
 
-    public void startRide(ActionEvent event)
+    public void startRide(ActionEvent event, String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         Parent root = null;
         try{
@@ -69,10 +71,20 @@ public class DriverController extends LoginController implements Initializable {
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
             driverRideController.labelWaitsAt.setText("Your client waits at location " + labelSelectedRide.getText());
+            driverRideController.username = username;
+            driverRideController.role = role;
+            driverRideController.name = name;
+            driverRideController.age = age;
+            driverRideController.gender = gender;
+            driverRideController.email = email;
+            driverRideController.licensePlate = licensePlate;
+
         }catch (IOException e)
         {
             e.printStackTrace();
         }
+
+
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("RideShare - Ride started");

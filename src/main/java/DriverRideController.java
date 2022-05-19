@@ -22,14 +22,14 @@ public class DriverRideController extends DriverController implements Initializa
     @FXML
     private Button buttonCancel, buttonArrived;
 
+    public String username, role, name, gender, email, licensePlate;
+    public int age;
+    
     public void initialize(URL location, ResourceBundle resources) {
 
-        buttonCancel.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", null, null, null, 0, null, null));
-        buttonArrived.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare", null, null, null, 0, null, null));
+        buttonCancel.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate));
+        buttonArrived.setOnAction(event -> DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate));
     }
 
-    public void startScene () {
-
-    }
 }
 
