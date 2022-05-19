@@ -30,47 +30,47 @@
                      <children>
                           <Label prefHeight="22.0" prefWidth="118.0" text="First name">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Last name">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Age">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Gender">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Email address">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Username">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Password">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label prefHeight="22.0" prefWidth="118.0" text="Role">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                           <Label fx:id="labelLicensePlate" text="License plate">
                               <font>
-                                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                                  <Font name="System Bold" size="17.0" />
                               </font>
                           </Label>
                      </children>
@@ -115,7 +115,7 @@
                     </Button>
                     <Button fx:id="buttonSignup" maxWidth="125.0" minWidth="131.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="131.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Continue" textFill="WHITE">
                         <font>
-                            <Font name="Arial Rounded MT Bold" size="18.0" />
+                            <Font name="System Bold" size="18.0" />
                         </font>
                     </Button>
                </children>
