@@ -42,7 +42,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="buttonRequest" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
+            <Button fx:id="buttonRequest" defaultButton="true" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Request ride" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Button>
@@ -120,27 +120,27 @@
                      <children>
                         <Label fx:id="labelName" text="Last First">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="labelAge" text="99">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="labelGender" text="Male/Female/Other">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="labelEmail" text="sample_email@something.com">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="labelUsername" text="user-name">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="17.0" />
+                              <Font size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="labelRole" text="Client/Driver">
@@ -152,7 +152,7 @@
                   </VBox>
                </children>
             </GridPane>
-                <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
+                <Button fx:id="buttonLogout" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
