@@ -17,7 +17,7 @@
             <Label fx:id="labelSelectedRide" text="Selected ride: X to Y" />
          <Button fx:id="buttonStart" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="Start ride" textFill="WHITE">
             <font>
-               <Font name="System Bold" size="18.0" />
+               <Font name="Arial Rounded MT Bold" size="18.0" />
             </font></Button>
       </children>
    </VBox>
@@ -58,37 +58,37 @@
                   <children>
                      <Label text="Full name" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="Age" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="Gender" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="Email address" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="Username" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="Role" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                      <Label text="License plate" textAlignment="CENTER" textFill="#655757">
                         <font>
-                           <Font name="System Bold" size="17.0" />
+                           <Font name="Arial Rounded MT Bold" size="17.0" />
                         </font>
                      </Label>
                   </children>
@@ -137,7 +137,7 @@
          </GridPane>
          <Button fx:id="buttonLogout" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #ff4e4e; -fx-cursor: hand;" text="Log out" textFill="WHITE">
             <font>
-               <Font name="System Bold" size="18.0" />
+               <Font name="Arial Rounded MT Bold" size="18.0" />
             </font>
          </Button>
       </children>

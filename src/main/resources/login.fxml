@@ -76,7 +76,7 @@
         </VBox>
         <Button fx:id="buttonLogin" alignment="CENTER" layoutX="135.0" layoutY="319.0" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Log in" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="18.0" />
+                <Font name="Arial Rounded MT Bold" size="18.0" />
             </font>
         </Button>
     </Pane>
