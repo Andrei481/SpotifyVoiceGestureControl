@@ -747,6 +747,7 @@ public class DBUtils extends LoginController {
             }
             else
             {
+                rides.clear();
                 while(resultSet.next())
                 {
                     String retrievedLocation = resultSet.getString("location");

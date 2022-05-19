@@ -23,7 +23,6 @@ public class DriverController extends LoginController implements Initializable {
     @FXML
     private ListView<String> listRides;
     private ObservableList<String> rides = FXCollections.observableArrayList();
-            // import rides from database here...
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,9 +36,7 @@ public class DriverController extends LoginController implements Initializable {
                     buttonStart.setDisable(false);
                 });
 
-
         // HISTORY TAB
-
 
         // PROFILE TAB
         buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare"));
@@ -49,7 +46,6 @@ public class DriverController extends LoginController implements Initializable {
     {
         // RIDES TAB
         buttonStart.setOnAction(event -> startRide(event, username, role, name, age, gender, email, licensePlate));
-
 
         // HISTORY TAB
 
