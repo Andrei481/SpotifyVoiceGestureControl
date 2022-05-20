@@ -72,6 +72,14 @@ public class DriverController extends LoginController implements Initializable {
     }
 
     public void startRide(ActionEvent event, String username, String role, String name, int age, String gender, String email, String licensePlate) {
+
+        String lastSelectedRide = selectedRide;
+        refreshRides();
+        if (!listRides.getItems().contains(lastSelectedRide)) {
+            displayError("Selected ride was canceled!");
+            return;
+        }
+
         Parent root = null;
         try{
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
