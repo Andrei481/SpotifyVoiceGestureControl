@@ -731,6 +731,63 @@ public class DBUtils extends LoginController {
         }
     }
 
+    public static void acceptRideDriver(ActionEvent event, int client_id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement psUpdate = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT accepted_driver_id FROM database_rides WHERE requesting_client_id = ?");
+            preparedStatement.setInt(1, client_id);
+            resultSet = preparedStatement.executeQuery();
+            if (!resultSet.isBeforeFirst()) {
+                System.out.println("Request from this client not found!");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The client with the user id: " + client_id + " has not requested any rides!");
+                alert.showAndWait();
+            } else {
+                psUpdate = connection.prepareStatement("UPDATE database_rides SET accepted_driver_id = ? WHERE requesting_client_id = ?");
+                psUpdate.setInt(1, getCurrentLoggedInUserID());
+                psUpdate.setInt(2, client_id);
+                psUpdate.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (psUpdate != null) {
+                try {
+                    psUpdate.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void checkAvailableRides() {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

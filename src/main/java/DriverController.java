@@ -23,6 +23,7 @@ public class DriverController extends LoginController implements Initializable {
     @FXML
     private ListView<String> listRides;
     private ObservableList<String> rides = FXCollections.observableArrayList();
+    private int client_id;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,6 +34,7 @@ public class DriverController extends LoginController implements Initializable {
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> {
                     labelSelectedRide.setText("Selected ride:" + '\n' + new_val);
+                    client_id = Integer.valueOf(new_val.split(" ")[0]);
                     buttonStart.setDisable(false);
                 });
 
@@ -67,7 +69,8 @@ public class DriverController extends LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
-            driverRideController.labelWaitsAt.setText("Your client waits at location " + labelSelectedRide.getText());
+            driverRideController.labelWaitsAt.setText("Your client with ID: " + client_id +" waits at location " + labelSelectedRide.getText().split(" ")[2]);
+            DBUtils.acceptRideDriver(event, client_id);
             driverRideController.username = username;
             driverRideController.role = role;
             driverRideController.name = name;
