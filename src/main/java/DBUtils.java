@@ -108,8 +108,10 @@ public class DBUtils extends LoginController {
         PreparedStatement psInsert = null;
         PreparedStatement psInsertClient = null;
         PreparedStatement psCheckUserAlreadyExists = null;
+        PreparedStatement st = null;
         //PreparedStatement psCheckEmailAlreadyUsed = null;
         ResultSet resultSet = null;
+        ResultSet rs = null;
 
         try{
             /*
@@ -147,8 +149,8 @@ public class DBUtils extends LoginController {
                 psInsert.setString(7, email);
                 psInsert.executeUpdate();
 
-                PreparedStatement st = connection.prepareStatement("SELECT MAX(user_id) from database_user");
-                ResultSet rs = st.executeQuery();
+                st = connection.prepareStatement("SELECT MAX(user_id) from database_user");
+                rs = st.executeQuery();
                 rs.next();
                 int uid = rs.getInt(1);
                 System.out.println(uid);
@@ -166,6 +168,15 @@ public class DBUtils extends LoginController {
             /*
               close db connections to avoid memory leaks
               */
+            if(rs != null)
+            {
+                try {
+                    rs.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
 
             if(resultSet != null)
             {
@@ -203,6 +214,15 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
+            if(st != null)
+            {
+                try {
+                    st.close();
+                }catch(SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
             if(connection != null)
             {
                 try{
@@ -225,8 +245,10 @@ public class DBUtils extends LoginController {
         PreparedStatement psInsert = null;
         PreparedStatement psInsertDriver = null;
         PreparedStatement psCheckUserAlreadyExists = null;
+        PreparedStatement st = null;
         //PreparedStatement psCheckEmailAlreadyUsed = null;
         ResultSet resultSet = null;
+        ResultSet rs = null;
 
         try{
             /*
@@ -269,8 +291,8 @@ public class DBUtils extends LoginController {
                 //Connection connectionDriver = null;
 
 
-                PreparedStatement st = connection.prepareStatement("SELECT MAX(user_id) from database_user");
-                ResultSet rs = st.executeQuery();
+                st = connection.prepareStatement("SELECT MAX(user_id) from database_user");
+                rs = st.executeQuery();
                 rs.next();
                 int uid = rs.getInt(1);
                 System.out.println(uid);
@@ -288,7 +310,15 @@ public class DBUtils extends LoginController {
             /*
               close db connections to avoid memory leaks
               */
-
+            if(rs != null)
+            {
+                try {
+                    rs.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
             if(resultSet != null)
             {
                 try{
@@ -646,12 +676,12 @@ public class DBUtils extends LoginController {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         PreparedStatement psUpdate = null;
-        PreparedStatement psInsert = null;
+        //PreparedStatement psInsert = null;
         ResultSet resultSet = null;
 
         try {
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
-            preparedStatement = connection.prepareStatement("SELECT ride_requested, location, destination FROM database_client WHERE user_id = ?");
+            preparedStatement = connection.prepareStatement("SELECT ride_requested, location, destination, corresponding_driver_id FROM database_client WHERE user_id = ?");
             preparedStatement.setInt(1, user_id);
             resultSet = preparedStatement.executeQuery();
 
@@ -664,20 +694,36 @@ public class DBUtils extends LoginController {
             }
             else
             {
-                psUpdate= connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ? WHERE user_id = ?");
-                psUpdate.setBoolean(1, true);
-                psUpdate.setString(2, location);
-                psUpdate.setString(3, destination);
-                psUpdate.setInt(4, user_id);
-                psUpdate.executeUpdate();
+                while(resultSet.next())
+                {
+                    int retrievedDriverId = resultSet.getInt("corresponding_driver_id");
 
-                psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
+                    if(retrievedDriverId == 0)
+                    {
+                        psUpdate= connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ? WHERE user_id = ?");
+                        psUpdate.setBoolean(1, true);
+                        psUpdate.setString(2, location);
+                        psUpdate.setString(3, destination);
+                        psUpdate.setInt(4, user_id);
+                        psUpdate.executeUpdate();
+                    }
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("You've already made a request!");
+                        alert.setContentText("A driver is already on his way to you!");
+                        alert.showAndWait();
+                    }
+                }
+
+
+                /*psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
                 psInsert.setString(1, location);
                 psInsert.setString(2, destination);
                 psInsert.setInt(3, user_id);
                 psInsert.setInt(4, 0);
                 psInsert.setBoolean(5, false);
-                psInsert.executeUpdate();
+                psInsert.executeUpdate();*/
             }
         }catch (SQLException e)
         {
@@ -710,7 +756,7 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
-            if(psInsert != null)
+            /*if(psInsert != null)
             {
                 try {
                     psInsert.close();
@@ -718,7 +764,7 @@ public class DBUtils extends LoginController {
                 {
                     e.printStackTrace();
                 }
-            }
+            }*/
             if(connection != null)
             {
                 try{
@@ -731,27 +777,37 @@ public class DBUtils extends LoginController {
         }
     }
 
-    public static void acceptRideDriver(ActionEvent event, int client_id) {
+    public static void acceptRideDriver(ActionEvent event, int driver_id, int client_id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        PreparedStatement psUpdate = null;
+        PreparedStatement psUpdateDriver = null;
+        PreparedStatement psUpdateClient = null;
         ResultSet resultSet = null;
 
         try {
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
-            preparedStatement = connection.prepareStatement("SELECT accepted_driver_id FROM database_rides WHERE requesting_client_id = ?");
-            preparedStatement.setInt(1, client_id);
+            preparedStatement = connection.prepareStatement("SELECT ride_started, corresponding_client_id FROM database_driver WHERE user_id = ?");
+            preparedStatement.setInt(1, driver_id);
             resultSet = preparedStatement.executeQuery();
             if (!resultSet.isBeforeFirst()) {
-                System.out.println("Request from this client not found!");
+                System.out.println("Driver not found!");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("The client with the user id: " + client_id + " has not requested any rides!");
+                alert.setContentText("The driver with the user id: " + driver_id + " does not exist!");
                 alert.showAndWait();
             } else {
-                psUpdate = connection.prepareStatement("UPDATE database_rides SET accepted_driver_id = ? WHERE requesting_client_id = ?");
-                psUpdate.setInt(1, getCurrentLoggedInUserID());
-                psUpdate.setInt(2, client_id);
-                psUpdate.executeUpdate();
+                while(resultSet.next()) {
+                    System.out.println("Driver found with user ID: " + driver_id);
+                    psUpdateDriver = connection.prepareStatement("UPDATE database_driver SET ride_started = ?, corresponding_client_id = ? WHERE user_id = ?");
+                    psUpdateDriver.setInt(3, driver_id);
+                    psUpdateDriver.setBoolean(1, true);
+                    psUpdateDriver.setInt(2, client_id);
+                    psUpdateDriver.executeUpdate();
+                }
+
+                psUpdateClient = connection.prepareStatement("UPDATE database_client SET corresponding_driver_id = ? WHERE user_id = ?");
+                psUpdateClient.setInt(2, client_id);
+                psUpdateClient.setInt(1, driver_id);
+                psUpdateClient.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -771,10 +827,19 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
-            if (psUpdate != null) {
+            if (psUpdateDriver != null) {
                 try {
-                    psUpdate.close();
+                    psUpdateDriver.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdateClient != null)
+            {
+                try{
+                    psUpdateClient.close();
+                }catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -795,8 +860,8 @@ public class DBUtils extends LoginController {
 
         try {
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
-            preparedStatement = connection.prepareStatement("SELECT location, destination, requesting_client_id FROM database_rides WHERE accepted_driver_id = ?");
-            preparedStatement.setInt(1, 0); // check rides that have driver_id 0
+            preparedStatement = connection.prepareStatement("SELECT user_id, location, destination, corresponding_driver_id FROM database_client WHERE ride_requested = ?");
+            preparedStatement.setBoolean(1, true); // check rides that have driver_id 0
             resultSet = preparedStatement.executeQuery();
 
             if (!resultSet.isBeforeFirst()) {
@@ -809,12 +874,17 @@ public class DBUtils extends LoginController {
                 rides.clear();
                 while(resultSet.next())
                 {
-                    String retrievedLocation = resultSet.getString("location");
-                    String retrievedDestination = resultSet.getString("destination");
-                    int retrievedClientId = resultSet.getInt("requesting_client_id");
+                    int retrievedDriverId = resultSet.getInt("corresponding_driver_id");
+                    if(retrievedDriverId == 0)
+                    {
+                        int retrievedClientId = resultSet.getInt("user_id");
+                        String retrievedLocation = resultSet.getString("location");
+                        String retrievedDestination = resultSet.getString("destination");
 
-                    Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
-                    rides.add(ride.toString());
+                        Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
+                        rides.add(ride.toString());
+                    }
+
 
                 }
                 //return rides;
@@ -855,6 +925,159 @@ public class DBUtils extends LoginController {
             }
         }
         //return null;
+    }
+
+    public static void driverArrived(ActionEvent event, int driver_id) // ride was successfull => reset client_db, reset driver_db, ADD (not update) ride to ride_db
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement ps = null;
+        PreparedStatement psUpdateDriver = null;
+        PreparedStatement psUpdateClient = null;
+        PreparedStatement psInsertRide = null;
+        ResultSet resultSet = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT corresponding_client_id FROM database_driver WHERE user_id = ?");
+            preparedStatement.setInt(1, driver_id);
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.isBeforeFirst())
+            {
+                System.out.println("Driver not found in db");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Driver is not in db");
+                alert.showAndWait();
+            }
+            else
+            {
+                int retrieved_client_id = 0;
+                while(resultSet.next())
+                {
+                    retrieved_client_id = resultSet.getInt("corresponding_client_id");
+                }
+
+                if(retrieved_client_id == 0)
+                {
+                    System.out.println("Clientul nu a fost gasit");
+                }
+                else {
+                    ps = connection.prepareStatement("SELECT location, destination FROM database_client WHERE user_id = ?");
+                    ps.setInt(1, retrieved_client_id);
+                    rs = ps.executeQuery();
+                    String retrievedLocation = null, retrievedDestination = null;
+                    while(rs.next()) {
+                        retrievedLocation = rs.getString("location");
+                        retrievedDestination = rs.getString("destination");
+                        System.out.println("Retrieved: "+retrievedLocation +" "+retrievedDestination);
+                    }
+
+                    psInsertRide = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
+                    psInsertRide.setString(1, retrievedLocation);
+                    psInsertRide.setString(2,retrievedDestination);
+                    psInsertRide.setInt(3, retrieved_client_id);
+                    psInsertRide.setInt(4, driver_id);
+                    psInsertRide.setBoolean(5, false);
+                    psInsertRide.executeUpdate();
+
+                    psUpdateDriver = connection.prepareStatement("UPDATE database_driver SET ride_started = ?, corresponding_client_id = ? WHERE user_id = ?");
+                    psUpdateDriver.setInt(3, driver_id);
+                    psUpdateDriver.setBoolean(1, false);
+                    psUpdateDriver.setInt(2, 0);
+                    psUpdateDriver.executeUpdate();
+
+                    psUpdateClient = connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ?, corresponding_driver_id = ? WHERE user_id = ?");
+                    psUpdateClient.setInt(5, retrieved_client_id);
+                    psUpdateClient.setBoolean(1, false);
+                    psUpdateClient.setString(2, null);
+                    psUpdateClient.setString(3, null);
+                    psUpdateClient.setInt(4, 0);
+                    psUpdateClient.executeUpdate();
+                }
+
+
+            }
+
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }finally {
+            if(rs != null)
+            {
+                try{
+                    rs.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try{
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(ps != null)
+            {
+                try{
+                    ps.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdateClient != null)
+            {
+                try{
+                    psUpdateClient.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdateDriver != null)
+            {
+                try{
+                    psUpdateDriver.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psInsertRide != null)
+            {
+                try{
+                    psInsertRide.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try {
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static ObservableList<String> getAvailableRidesList()

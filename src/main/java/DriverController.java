@@ -24,6 +24,7 @@ public class DriverController extends LoginController implements Initializable {
     private ObservableList<String> rides = FXCollections.observableArrayList();
     private int client_id;
     private String selectedRide;
+    private String location;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,6 +37,7 @@ public class DriverController extends LoginController implements Initializable {
                     if (selectedRide != null) {
                         labelSelectedRide.setText("Selected ride:" + '\n' + selectedRide);
                         client_id = Integer.valueOf(new_val.split(" ")[0]);
+                        System.out.println("client id: |"+client_id+"|");
                         buttonStart.setDisable(false);
                     }
                     else {
@@ -70,21 +72,13 @@ public class DriverController extends LoginController implements Initializable {
     }
 
     public void startRide(ActionEvent event, String username, String role, String name, int age, String gender, String email, String licensePlate) {
-
-        String lastSelectedRide = selectedRide;
-        refreshRides();
-        if (!listRides.getItems().contains(lastSelectedRide)) {
-            displayError("Selected ride was canceled!");
-            return;
-        }
-
         Parent root = null;
-        try {
+        try{
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
             driverRideController.labelWaitsAt.setText("Your client with ID: " + client_id +" waits at location " + labelSelectedRide.getText().split(" ")[2]);
-            DBUtils.acceptRideDriver(event, client_id);
+            DBUtils.acceptRideDriver(event, DBUtils.getCurrentLoggedInUserID(), client_id);
             driverRideController.username = username;
             driverRideController.role = role;
             driverRideController.name = name;
@@ -93,9 +87,12 @@ public class DriverController extends LoginController implements Initializable {
             driverRideController.email = email;
             driverRideController.licensePlate = licensePlate;
 
-        } catch (IOException e) {
+        }catch (IOException e)
+        {
             e.printStackTrace();
         }
+
+
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("RideShare - Ride started");
