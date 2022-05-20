@@ -19,6 +19,7 @@ public class DriverController extends LoginController implements Initializable {
     private Button buttonStart, buttonLogout, buttonRefresh;
     @FXML
     private ListView<String> listRides;
+    private String selectedRide;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -27,8 +28,9 @@ public class DriverController extends LoginController implements Initializable {
         refreshRides();
         listRides.getSelectionModel().selectedItemProperty().addListener(
                 (ov, old_val, new_val) -> {
-                    if (new_val != null) {
-                        labelSelectedRide.setText("Selected ride:" + '\n' + new_val);
+                    selectedRide = new_val;
+                    if (selectedRide != null) {
+                        labelSelectedRide.setText("Selected ride:" + '\n' + selectedRide);
                         buttonStart.setDisable(false);
                     }
                     else {
@@ -62,10 +64,17 @@ public class DriverController extends LoginController implements Initializable {
 
     }
 
-    public void startRide(ActionEvent event, String username, String role, String name, int age, String gender, String email, String licensePlate)
-    {
+    public void startRide(ActionEvent event, String username, String role, String name, int age, String gender, String email, String licensePlate) {
+
+        String lastSelectedRide = selectedRide;
+        refreshRides();
+        if (!listRides.getItems().contains(lastSelectedRide)) {
+            displayError("Selected ride was canceled!");
+            return;
+        }
+
         Parent root = null;
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
@@ -78,8 +87,7 @@ public class DriverController extends LoginController implements Initializable {
             driverRideController.email = email;
             driverRideController.licensePlate = licensePlate;
 
-        }catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -87,10 +95,23 @@ public class DriverController extends LoginController implements Initializable {
         stage.setTitle("RideShare - Ride started");
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
+
     }
 
     private void refreshRides () {
         DBUtils.checkAvailableRides();
         listRides.setItems(DBUtils.getAvailableRidesList());
+
+        buttonRefresh.setDisable(true);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        buttonRefresh.setDisable(false);
+                    }
+                },
+                800
+        );
     }
 }
