@@ -801,6 +801,7 @@ public class DBUtils extends LoginController {
 
             if (!resultSet.isBeforeFirst()) {
                 System.out.println("No available rides");
+                rides.clear();
                // return null;
             }
             else
