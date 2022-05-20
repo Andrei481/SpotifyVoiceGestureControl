@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -17,10 +18,16 @@
             <VBox alignment="CENTER_LEFT" maxHeight="800.0" maxWidth="400.0" minHeight="250.0" minWidth="400.0" prefHeight="250.0" prefWidth="400.0" spacing="10.0">
                <children>
                   <ListView fx:id="listRides" maxHeight="800.0" maxWidth="400.0" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" style="-fx-font-size: 18;" />
-                  <Button fx:id="buttonRefresh" mnemonicParsing="false" text="Refresh">
+                  <Button fx:id="buttonRefresh" mnemonicParsing="false" style="-fx-background-color: #55FED9;" text="Refresh" textFill="#655757">
                      <VBox.margin>
                         <Insets left="10.0" />
-                     </VBox.margin></Button>
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children>
             </VBox>
             <Label fx:id="labelSelectedRide" alignment="CENTER" contentDisplay="CENTER" minHeight="60.0" text="Please select a ride" textAlignment="CENTER">
