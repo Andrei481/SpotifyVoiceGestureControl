@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import org.mindrot.jbcrypt.BCrypt;
 import util.Ride;
 
 import javax.management.Query;
@@ -380,7 +381,7 @@ public class DBUtils extends LoginController {
 
                     currentLoggedInUserID = retrievedUserID;
 
-                    if(retrievedPassword.equals(password)) {
+                    if(BCrypt.checkpw(password, retrievedPassword)) {
                         System.out.println("Current user id: "+currentLoggedInUserID);
                         if (retrievedRole.equals("Client"))
                             changeScene(event, "client.fxml", "RideShare - Client", username, retrievedRole, retrievedName, retrievedAge, retrievedGender, retrievedEmail);

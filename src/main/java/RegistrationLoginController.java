@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.mindrot.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class RegistrationLoginController extends LoginController implements Initializable {
     @FXML
@@ -102,11 +104,11 @@ public class RegistrationLoginController extends LoginController implements Init
                     //DBUtils.registerUser(event, username, password, role, fullName, age, gender, email);
                     if(role.equals("Client"))
                     {
-                        DBUtils.registerClient(event, username, password, role, fullName, age, gender, email);
+                        DBUtils.registerClient(event, username, BCrypt.hashpw(password, BCrypt.gensalt()), role, fullName, age, gender, email);
                     }
                     else if(role.equals("Driver"))
                     {
-                        DBUtils.registerDriver(event, username, password, role, fullName, age, gender, email, licensePlate);
+                        DBUtils.registerDriver(event, username, BCrypt.hashpw(password, BCrypt.gensalt()), role, fullName, age, gender, email, licensePlate);
                     }
                 }
             }else
