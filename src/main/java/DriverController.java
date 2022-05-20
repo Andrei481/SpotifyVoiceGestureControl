@@ -100,8 +100,6 @@ public class DriverController extends LoginController implements Initializable {
             e.printStackTrace();
         }
 
-
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("RideShare - Ride started");
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));

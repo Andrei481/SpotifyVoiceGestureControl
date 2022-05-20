@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<HBox alignment="CENTER" minHeight="400.0" minWidth="400.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DriverRideController">
+<HBox alignment="CENTER" minHeight="400.0" minWidth="400.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DriverRideController">
    <children>
-      <VBox alignment="CENTER" spacing="30.0">
+      <VBox alignment="CENTER" minHeight="400.0" minWidth="500.0" spacing="30.0">
       <children>
-         <Label fx:id="labelWaitsAt" alignment="CENTER" contentDisplay="CENTER" text="Your client waits at location X" textAlignment="CENTER">
+         <Label fx:id="labelWaitsAt" alignment="CENTER" contentDisplay="CENTER" minWidth="450.0" text="Your client waits at location X" textAlignment="CENTER" wrapText="true">
             <font>
                <Font size="24.0" />
             </font>
          </Label>
-            <HBox alignment="CENTER" spacing="50.0">
+            <HBox alignment="CENTER" minWidth="400.0" spacing="50.0">
                <children>
                   <Button fx:id="buttonCancel" alignment="CENTER" cancelButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" onAction="#cancelRide" prefWidth="131.0" style="-fx-background-color: #d6d6d6; -fx-cursor: hand;" text="Cancel ride" textFill="#575757">
                      <font>
