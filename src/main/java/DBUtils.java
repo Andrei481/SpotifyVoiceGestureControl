@@ -137,7 +137,7 @@ public class DBUtils extends LoginController {
             }
             else
             {
-                psInsert = connection.prepareStatement("INSERT INTO database_user (username, password, role, name, age, gender, email) VALUES (?, ?, ?, ?, ?, ?, ?)");;
+                psInsert = connection.prepareStatement("INSERT INTO database_user (username, password, role, name, age, gender, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 psInsert.setString(1, username);
                 psInsert.setString(2, password);
                 psInsert.setString(3, role);
@@ -155,7 +155,7 @@ public class DBUtils extends LoginController {
                 insertIntoClientDatabase(event, uid, false, null, null, 0);
                 System.out.println("Client registered successfully!");
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText("Registration completed! Welcome to Rideshare!");
+                alert.setContentText("Registration completed! Welcome to RideShare!");
                 alert.showAndWait();
                 changeScene(event, "login.fxml", "RideShare");
             }
