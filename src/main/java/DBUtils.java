@@ -1,5 +1,4 @@
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,7 +11,6 @@ import javafx.event.ActionEvent;
 import org.mindrot.jbcrypt.BCrypt;
 import util.Ride;
 
-import javax.management.Query;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Objects;
@@ -20,7 +18,8 @@ import java.util.Objects;
 public class DBUtils extends LoginController {
     private static int currentLoggedInUserID;
 
-    private static ObservableList<String> rides = FXCollections.observableArrayList();
+    private static ObservableList<String> availableRides = FXCollections.observableArrayList();
+    private static ObservableList<String> rideHistory = FXCollections.observableArrayList();
 
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email)
     {
@@ -866,12 +865,12 @@ public class DBUtils extends LoginController {
 
             if (!resultSet.isBeforeFirst()) {
                 System.out.println("No available rides");
-                rides.clear();
+                availableRides.clear();
                // return null;
             }
             else
             {
-                rides.clear();
+                availableRides.clear();
                 while(resultSet.next())
                 {
                     int retrievedDriverId = resultSet.getInt("corresponding_driver_id");
@@ -882,7 +881,7 @@ public class DBUtils extends LoginController {
                         String retrievedDestination = resultSet.getString("destination");
 
                         Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
-                        rides.add(ride.toString());
+                        availableRides.add(ride.toString());
                     }
 
 
@@ -1345,9 +1344,165 @@ public class DBUtils extends LoginController {
         }
     }
 
+    public static void checkRideHistory()
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement psCheck = null;
+        ResultSet resultSet = null;
+        ResultSet rsCheck = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            preparedStatement = connection.prepareStatement("SELECT role FROM database_user WHERE user_id = ?");
+            preparedStatement.setInt(1, getCurrentLoggedInUserID());
+            resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.isBeforeFirst())
+            {
+                System.out.println("User not found");
+            }
+            else
+            {
+                while (resultSet.next())
+                {
+                    String retrievedRole = resultSet.getString("role");
+
+                    if(retrievedRole.equals("Client"))
+                    {
+                        psCheck = connection.prepareStatement("SELECT location, destination, accepted_driver_id, ride_cancelled FROM database_rides WHERE requesting_client_id =?");
+                        psCheck.setInt(1, getCurrentLoggedInUserID());
+                        rsCheck = psCheck.executeQuery();
+
+                        if(!rsCheck.isBeforeFirst())
+                        {
+                            System.out.println("No client found");
+                        }
+                        else
+                        {
+                            while (rsCheck.next())
+                            {
+                                String retrievedLocation = rsCheck.getString("location");
+                                String retrievedDestination = rsCheck.getString("destination");
+                                int retrievedDriverId = rsCheck.getInt("accepted_driver_id");
+                                boolean retrievedRideCancelled = rsCheck.getBoolean("ride_cancelled");
+
+                                String ride = "Location: "+retrievedLocation+" | Destination: "+retrievedDestination+" | ";
+
+                                if(retrievedDriverId == 0)
+                                {
+                                    ride += "No Driver | Status: ";
+                                }
+                                else
+                                {
+                                    ride += "Driver ID: "+retrievedDriverId+" | Status: ";
+                                }
+                                if(retrievedRideCancelled == true)
+                                {
+                                    ride += "Cancelled";
+                                }
+                                else if(retrievedRideCancelled == false)
+                                {
+                                    ride += "Completed";
+                                }
+
+                                rideHistory.add(ride);
+                            }
+                        }
+
+                    }else if(retrievedRole.equals("Driver"))
+                    {
+                        psCheck = connection.prepareStatement("SELECT location, destination, requesting_client_id, ride_cancelled FROM database_rides WHERE accepted_driver_id =?");
+                        psCheck.setInt(1, getCurrentLoggedInUserID());
+                        rsCheck = psCheck.executeQuery();
+
+                        if(!rsCheck.isBeforeFirst())
+                        {
+                            System.out.println("No driver found");
+                        }
+                        else {
+                            while (rsCheck.next()) {
+                                String retrievedLocation = rsCheck.getString("location");
+                                String retrievedDestination = rsCheck.getString("destination");
+                                int retrievedClientId = rsCheck.getInt("requesting_client_id");
+                                boolean retrievedRideCancelled = rsCheck.getBoolean("ride_cancelled");
+
+                                String ride = "Location: " + retrievedLocation + " | Destination: " + retrievedDestination + " | Client ID: "+retrievedClientId+" | Status: ";
+
+                                if (retrievedRideCancelled == true) {
+                                    ride += "Cancelled";
+                                } else if (retrievedRideCancelled == false) {
+                                    ride += "Completed";
+                                }
+
+                                rideHistory.add(ride);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }finally {
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(rsCheck != null)
+            {
+                try {
+                    rsCheck.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try {
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psCheck != null)
+            {
+                try {
+                    psCheck.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try {
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
     public static ObservableList<String> getAvailableRidesList()
     {
-        return rides;
+        return availableRides;
+    }
+
+    public static ObservableList<String> getRideHistory()
+    {
+        return rideHistory;
     }
 
     public static int getCurrentLoggedInUserID()

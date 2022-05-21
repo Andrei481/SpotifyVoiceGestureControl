@@ -7,9 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import util.Ride;
 
@@ -30,6 +28,10 @@ public class ClientController extends LoginController implements Initializable {
     private ComboBox<String> comboBoxLocation, comboBoxDestination;
     @FXML
     private Button buttonRequest, buttonLogout;
+    @FXML
+    private Tab tabClientHistory;
+    @FXML
+    private ListView<String> listRideHistory;
 
     private String chosenLocation, chosenDestination;
     private Ride ride;
@@ -61,7 +63,13 @@ public class ClientController extends LoginController implements Initializable {
         
 
         // HISTORY TAB
-
+        tabClientHistory.setOnSelectionChanged(event -> {
+            if(tabClientHistory.isSelected())
+            {
+                DBUtils.checkRideHistory();
+                listRideHistory.setItems(DBUtils.getRideHistory());
+            }
+        });
 
         // PROFILE TAB
         buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
@@ -120,5 +128,10 @@ public class ClientController extends LoginController implements Initializable {
         stage.setTitle("RideShare - Ride started");
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
+    }
+
+    public void history()
+    {
+        System.out.println("Ride History Tab");
     }
 }

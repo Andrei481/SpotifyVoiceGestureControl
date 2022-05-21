@@ -21,6 +21,11 @@ public class DriverController extends LoginController implements Initializable {
     private Button buttonStart, buttonLogout, buttonRefresh;
     @FXML
     private ListView<String> listRides;
+    @FXML
+    private ListView<String> listRideHistory;
+    @FXML
+    private Tab tabRideHistory;
+
     private ObservableList<String> rides = FXCollections.observableArrayList();
     private int client_id;
     private String selectedRide;
@@ -48,7 +53,13 @@ public class DriverController extends LoginController implements Initializable {
         buttonRefresh.setOnAction(event -> refreshRides());
 
         // HISTORY TAB
-
+        tabRideHistory.setOnSelectionChanged(event -> {
+            if(tabRideHistory.isSelected())
+            {
+                DBUtils.checkRideHistory();
+                listRideHistory.setItems(DBUtils.getRideHistory());
+            }
+        });
         // PROFILE TAB
         buttonLogout.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare"));
     }
