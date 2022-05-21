@@ -5,6 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +22,9 @@ public class ClientRideController extends ClientController implements Initializa
     public int age;
     
     public void initialize(URL location, ResourceBundle resources) {
+        buttonCancel.setOnAction(event -> cancelRide());
         //receiveDriver("Gigi", "Male");
+        //finishRide();
     }
 
     public void cancelRide() {
@@ -49,6 +53,20 @@ public class ClientRideController extends ClientController implements Initializa
                 gender = "db error";
         }
         labelPleaseWait.setText("Your ride was accepted by " + driverName + ".\n" + "Please wait until " + gender + " arrive" + appendS + " at your location.");
+    }
+
+    public void finishRide () {
+
+        labelPleaseWait.setText("Your driver arrived!");
+        buttonCancel.setText("Ok");
+        buttonCancel.setStyle("-fx-background-color: #0060FA;");
+        buttonCancel.setTextFill(new Color(1,1,1,1));
+        buttonCancel.setOnAction(event -> returnToRequestPage(event));
+    }
+
+    private void returnToRequestPage (ActionEvent event) {
+
+        DBUtils.changeScene(event, "client.fxml", "RideShare - Client", username, role, name, age, gender, email);
     }
 
 }

@@ -24,7 +24,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-               <Button fx:id="buttonArrived" defaultButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA;" text="I arrived" textFill="WHITE">
+               <Button fx:id="buttonArrived" alignment="CENTER" defaultButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA;" text="I arrived" textFill="WHITE">
                   <font>
                      <Font name="System Bold" size="18.0" />
                   </font>
