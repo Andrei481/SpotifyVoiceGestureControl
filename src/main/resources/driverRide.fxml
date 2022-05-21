@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -15,15 +16,21 @@
          </Label>
             <HBox alignment="CENTER" minWidth="400.0" spacing="50.0">
                <children>
-                  <Button fx:id="buttonCancel" alignment="CENTER" cancelButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" onAction="#cancelRide" prefWidth="131.0" style="-fx-background-color: #d6d6d6; -fx-cursor: hand;" text="Cancel ride" textFill="#575757">
+                  <Button fx:id="buttonCancel" alignment="CENTER" cancelButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" onAction="#cancelRide" prefWidth="131.0" style="-fx-background-color: #d6d6d6;" text="Cancel ride" textFill="#575757">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
-               <Button fx:id="buttonArrived" defaultButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA; -fx-cursor: hand;" text="I arrived" textFill="WHITE">
+               <Button fx:id="buttonArrived" alignment="CENTER" defaultButton="true" maxWidth="131.0" minWidth="131.0" mnemonicParsing="false" prefWidth="131.0" style="-fx-background-color: #0060FA;" text="I arrived" textFill="WHITE">
                   <font>
                      <Font name="System Bold" size="18.0" />
                   </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                </children>
             </HBox>
