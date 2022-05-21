@@ -299,7 +299,7 @@ public class DBUtils extends LoginController {
                 insertIntoDriverDatabase(event, uid, licensePlate, false, 0);
                 System.out.println("Driver registered successfully!");
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText("Registration completed! Welcome to Rideshare!");
+                alert.setContentText("Registration completed! Welcome to RideShare!");
                 alert.showAndWait();
                 changeScene(event, "login.fxml", "RideShare");
             }
