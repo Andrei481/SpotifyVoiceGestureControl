@@ -1080,6 +1080,133 @@ public class DBUtils extends LoginController {
         }
     }
 
+    public static void cancelRideClient (ActionEvent event) {
+
+        int user_id_of_client = DBUtils.getCurrentLoggedInUserID()
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        PreparedStatement ps = null;
+        PreparedStatement psUpdateClient = null;
+        PreparedStatement psInsertRide = null;
+        ResultSet resultSet = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+
+            ps = connection.prepareStatement("SELECT location, destination FROM database_client WHERE user_id = ?");
+            ps.setInt(1, user_id_of_client);
+            rs = ps.executeQuery();
+            String retrievedLocation = null, retrievedDestination = null;
+            while(rs.next()) {
+                retrievedLocation = rs.getString("location");
+                retrievedDestination = rs.getString("destination");
+                System.out.println("Retrieved: "+retrievedLocation +" "+retrievedDestination);
+            }
+
+            psInsertRide = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
+            psInsertRide.setString(1, retrievedLocation);
+            psInsertRide.setString(2,retrievedDestination);
+            psInsertRide.setInt(3, user_id_of_client);
+            psInsertRide.setInt(4, 0);
+            psInsertRide.setBoolean(5, true);
+            psInsertRide.executeUpdate();
+
+            psUpdateDriver = connection.prepareStatement("UPDATE database_driver SET ride_started = ?, corresponding_client_id = ? WHERE user_id = ?");
+            psUpdateDriver.setInt(3, driver_id);
+            psUpdateDriver.setBoolean(1, false);
+            psUpdateDriver.setInt(2, 0);
+            psUpdateDriver.executeUpdate();
+
+            psUpdateClient = connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ?, corresponding_driver_id = ? WHERE user_id = ?");
+            psUpdateClient.setInt(5, retrieved_client_id);
+            psUpdateClient.setBoolean(1, false);
+            psUpdateClient.setString(2, null);
+            psUpdateClient.setString(3, null);
+            psUpdateClient.setInt(4, 0);
+            psUpdateClient.executeUpdate();
+
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }finally {
+            if(rs != null)
+            {
+                try{
+                    rs.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(resultSet != null)
+            {
+                try{
+                    resultSet.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(preparedStatement != null)
+            {
+                try{
+                    preparedStatement.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(ps != null)
+            {
+                try{
+                    ps.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdateClient != null)
+            {
+                try{
+                    psUpdateClient.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psUpdateDriver != null)
+            {
+                try{
+                    psUpdateDriver.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(psInsertRide != null)
+            {
+                try{
+                    psInsertRide.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if(connection != null)
+            {
+                try {
+                    connection.close();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void cancelRide(ActionEvent event, int driver_id) // ride was cancelled => reset client_db, reset driver_db, ADD (not update) ride to ride_db
     {
         Connection connection = null;

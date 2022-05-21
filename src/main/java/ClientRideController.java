@@ -7,7 +7,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -22,16 +21,23 @@ public class ClientRideController extends ClientController implements Initializa
     public int age;
     
     public void initialize(URL location, ResourceBundle resources) {
-        buttonCancel.setOnAction(event -> cancelRide());
+        buttonCancel.setOnAction(event -> cancelRide(event));
+
+        // use these when necessary:
         //receiveDriver("Gigi", "Male");
         //finishRide();
     }
 
-    public void cancelRide() {
+    public void cancelRide(ActionEvent event) {
 
+        /*
         Alert alert = new Alert(Alert.AlertType.WARNING, "This will cancel the current ride. Are you sure you want to proceed?", ButtonType.CANCEL, ButtonType.YES);
         alert.setTitle("Cancel ride - WARNING");
         alert.showAndWait();
+        */
+
+        DBUtils.cancelRideClient(event);
+        returnToRequestPage(event);
     }
 
     public void receiveDriver(String driverName, String gender) {
