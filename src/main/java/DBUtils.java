@@ -1082,7 +1082,7 @@ public class DBUtils extends LoginController {
 
     public static void cancelRideClient (ActionEvent event) {
 
-        int user_id_of_client = DBUtils.getCurrentLoggedInUserID()
+        int user_id_of_client = DBUtils.getCurrentLoggedInUserID();
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -1113,14 +1113,8 @@ public class DBUtils extends LoginController {
             psInsertRide.setBoolean(5, true);
             psInsertRide.executeUpdate();
 
-            psUpdateDriver = connection.prepareStatement("UPDATE database_driver SET ride_started = ?, corresponding_client_id = ? WHERE user_id = ?");
-            psUpdateDriver.setInt(3, driver_id);
-            psUpdateDriver.setBoolean(1, false);
-            psUpdateDriver.setInt(2, 0);
-            psUpdateDriver.executeUpdate();
-
             psUpdateClient = connection.prepareStatement("UPDATE database_client SET ride_requested = ?, location = ?, destination = ?, corresponding_driver_id = ? WHERE user_id = ?");
-            psUpdateClient.setInt(5, retrieved_client_id);
+            psUpdateClient.setInt(5, user_id_of_client);
             psUpdateClient.setBoolean(1, false);
             psUpdateClient.setString(2, null);
             psUpdateClient.setString(3, null);
@@ -1172,15 +1166,6 @@ public class DBUtils extends LoginController {
             {
                 try{
                     psUpdateClient.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if(psUpdateDriver != null)
-            {
-                try{
-                    psUpdateDriver.close();
                 }catch (SQLException e)
                 {
                     e.printStackTrace();
