@@ -24,7 +24,7 @@ import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 
 public class ClientController extends LoginController implements Initializable {
     @FXML
-    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole;
+    private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelUserID, labelRole;
     private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");
     @FXML
     private ComboBox<String> comboBoxLocation, comboBoxDestination;
@@ -84,6 +84,7 @@ public class ClientController extends LoginController implements Initializable {
         labelGender.setText(gender);
         labelEmail.setText(email);
         labelUsername.setText(username);
+        labelUserID.setText('#' + String.valueOf(DBUtils.getCurrentLoggedInUserID()));
         labelRole.setText(role);
     }
     public static ObservableList<String> getRideList()
