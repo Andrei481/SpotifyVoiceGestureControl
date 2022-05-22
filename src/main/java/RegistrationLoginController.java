@@ -8,23 +8,29 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.mindrot.*;
+
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class RegistrationLoginController extends LoginController implements Initializable {
     @FXML
     private Button buttonSignup, buttonLogin;
     @FXML
-    private TextField textFieldUsername, textFieldPassword, textFieldFirstName, textFieldLastName, textFieldAge, textFieldEmail, textFieldLicensePlate;
+    private TextField textFieldUsername, textFieldFirstName, textFieldLastName, textFieldAge, textFieldEmail, textFieldLicensePlate;
+    @FXML
+    private PasswordField fieldPassword, fieldConfirmPassword;
     @FXML
     private ComboBox<String> comboBoxGender;
     @FXML
     private RadioButton radioButtonDriver, radioButtonClient;
     @FXML
-    private Label labelLicensePlate;
+    private Label labelLicensePlate, labelAge, labelError, labelEmail;
     private final ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
     private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = "";
     private int age;
+    private ToggleGroup toggleGroup;
+    private boolean ageError = false, emailError = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -35,13 +41,13 @@ public class RegistrationLoginController extends LoginController implements Init
         labelLicensePlate.setVisible(false);
         textFieldLicensePlate.setVisible(false);
 
-
-        ToggleGroup toggleGroup = new ToggleGroup();
+        toggleGroup = new ToggleGroup();
         radioButtonDriver.setToggleGroup(toggleGroup);
         radioButtonClient.setSelected(true);
         radioButtonClient.setToggleGroup(toggleGroup);
 
         radioButtonDriver.selectedProperty().addListener((observable, wasPreviouslySelected, isNowSelected) -> {
+            checkAge(textFieldAge.getText());
             if(isNowSelected)
             {
                 labelLicensePlate.setVisible(true);
@@ -55,14 +61,19 @@ public class RegistrationLoginController extends LoginController implements Init
         });
 
         textFieldAge.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("\\*d"))
-            {
+
+            if(!newValue.matches("\\*d")) {
                 textFieldAge.setText(newValue.replaceAll("\\D", ""));
             }
+            checkAge(newValue);
+        });
+
+        textFieldEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            checkValidEmail(newValue);
         });
 
         comboBoxGender.setItems(genders);
-
 
         buttonSignup.setOnAction(event -> {
             if(!checkEmptyFields())
@@ -74,7 +85,7 @@ public class RegistrationLoginController extends LoginController implements Init
                 age = Integer.parseInt(textFieldAge.textProperty().getValue());
                 email = textFieldEmail.textProperty().getValue();
                 username = textFieldUsername.textProperty().getValue();
-                password = textFieldPassword.textProperty().getValue();
+                password = fieldPassword.textProperty().getValue();
                 gender = comboBoxGender.getValue();
                 if(role.equals("Driver"))
                 {
@@ -124,7 +135,7 @@ public class RegistrationLoginController extends LoginController implements Init
 
     public boolean checkEmptyFields()
     {
-        return textFieldUsername.textProperty().getValue() == null || textFieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null;
+        return textFieldUsername.textProperty().getValue() == null || fieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null;
        /* if(role.equals("Driver"))
         {
             if(licensePlate.equals(""))
@@ -142,6 +153,16 @@ public class RegistrationLoginController extends LoginController implements Init
         Matcher matcher = pattern.matcher(email);
 
         result = matcher.matches();
+
+        if (result) {
+            emailError = false;
+            updateErrors();
+            labelEmail.setTextFill(new Color(0, 0, 0, 1));
+        } else {
+            emailError = true;
+            updateErrors();
+            labelEmail.setTextFill(new Color(1, 0, 0, 1));
+        }
         return result;
     }
 /*
@@ -166,6 +187,44 @@ public class RegistrationLoginController extends LoginController implements Init
         System.out.println("Full name: "+fullName);
     }
 
+    private void checkAge (String newValue) {
+
+        int currAge = 0;
+        if (!newValue.equals("")) {
+            try {
+                currAge = Integer.parseInt(newValue);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+            if (currAge > 999) {
+                currAge = currAge / 10;
+                textFieldAge.setText(String.valueOf(currAge));
+            }
+
+            if ((currAge < 18) && (radioButtonDriver.isSelected())) {
+                ageError = true;
+                updateErrors();
+                labelAge.setTextFill(new Color(1, 0, 0, 1));
+            } else {
+                ageError = false;
+                updateErrors();
+                labelAge.setTextFill(new Color(0, 0, 0, 1));
+            }
+        }
+    }
+
+    private void updateErrors() {
+
+        boolean anyError = (ageError || emailError);
+        buttonSignup.setDisable(anyError);
+        labelError.setVisible(anyError);
+
+        if (emailError)
+            labelError.setText("Please enter a valid email address.");
+        if (ageError)
+            labelError.setText("You must be at least 18 to register as a driver!");
+    }
+
     /*public void ageEntered(ActionEvent event)
     {
         age = Integer.valueOf(textFieldAge.textProperty().getValue());
@@ -186,7 +245,7 @@ public class RegistrationLoginController extends LoginController implements Init
 
     public void passwordEntered(ActionEvent event)
     {
-        password = textFieldPassword.textProperty().getValue();
+        password = fieldPassword.textProperty().getValue();
         System.out.println("Password: "+password);
     }
 

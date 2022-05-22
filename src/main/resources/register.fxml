@@ -24,33 +24,33 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" minWidth="400.0">
                <children>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="First name">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="First name">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="textFieldFirstName" prefHeight="26.0" prefWidth="187.0" />
+                                <TextField fx:id="textFieldFirstName" prefHeight="26.0" prefWidth="190.0" />
                            </children>
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Last name">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Last name">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="textFieldLastName" prefHeight="26.0" prefWidth="187.0" />
+                                <TextField fx:id="textFieldLastName" prefHeight="26.0" prefWidth="190.0" />
                            </children>
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Age">
+                                <Label fx:id="labelAge" prefHeight="22.0" prefWidth="190.0" text="Age">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
@@ -60,7 +60,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Gender">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Gender">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
@@ -70,37 +70,47 @@
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Email address">
+                                <Label fx:id="labelEmail" prefHeight="22.0" prefWidth="190.0" text="Email address">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="textFieldEmail" prefHeight="26.0" prefWidth="187.0" />
+                                <TextField fx:id="textFieldEmail" prefHeight="26.0" prefWidth="190.0" />
                            </children>
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Username">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Username">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="textFieldUsername" prefHeight="26.0" prefWidth="187.0" />
+                                <TextField fx:id="textFieldUsername" prefHeight="26.0" prefWidth="190.0" />
                            </children>
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Password">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Password">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="textFieldPassword" prefHeight="26.0" prefWidth="187.0" />
+                                <PasswordField fx:id="fieldPassword" prefHeight="26.0" prefWidth="190.0" />
                            </children>
                         </HBox>
                         <HBox>
                            <children>
-                                <Label prefHeight="22.0" prefWidth="118.0" text="Role">
+                               <Label prefHeight="22.0" prefWidth="190.0" text="Confirm password">
+                                   <font>
+                                       <Font size="17.0" />
+                                   </font>
+                               </Label>
+                               <PasswordField fx:id="fieldConfirmPassword" prefHeight="26.0" prefWidth="190.0" />
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Role">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
@@ -126,7 +136,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                                <Label fx:id="labelLicensePlate" prefHeight="22.0" prefWidth="118.0" text="License plate">
+                                <Label fx:id="labelLicensePlate" prefHeight="22.0" prefWidth="190.0" text="License plate">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
@@ -138,6 +148,11 @@
                   </VBox>
                </children>
             </HBox>
+            <Label fx:id="labelError" alignment="CENTER" contentDisplay="CENTER" minWidth="380.0" text="Error" textAlignment="CENTER" textFill="RED" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
             <HBox alignment="CENTER" spacing="50.0">
                <children>
                     <Button fx:id="buttonLogin" alignment="CENTER" cancelButton="true" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" style="-fx-background-color: #d6d6d6; -fx-cursor: hand;" text="Back" textFill="#575757">
@@ -145,7 +160,7 @@
                             <Font name="System Bold" size="18.0" />
                         </font>
                     </Button>
-                    <Button fx:id="buttonSignup" alignment="CENTER" defaultButton="true" maxWidth="125.0" minWidth="131.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="131.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Continue" textFill="WHITE">
+                    <Button fx:id="buttonSignup" alignment="CENTER" defaultButton="true" disable="true" maxWidth="125.0" minWidth="131.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="131.0" style="-fx-background-color: #1362f5; -fx-cursor: hand;" text="Continue" textFill="WHITE">
                         <font>
                             <Font name="System Bold" size="18.0" />
                         </font>
