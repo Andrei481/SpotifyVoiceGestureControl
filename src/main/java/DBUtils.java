@@ -863,14 +863,15 @@ public class DBUtils extends LoginController {
             preparedStatement.setBoolean(1, true); // check rides that have driver_id 0
             resultSet = preparedStatement.executeQuery();
 
+            availableRides.clear();
+
             if (!resultSet.isBeforeFirst()) {
                 System.out.println("No available rides");
-                availableRides.clear();
+
                // return null;
             }
             else
             {
-                availableRides.clear();
                 while(resultSet.next())
                 {
                     int retrievedDriverId = resultSet.getInt("corresponding_driver_id");
@@ -879,9 +880,20 @@ public class DBUtils extends LoginController {
                         int retrievedClientId = resultSet.getInt("user_id");
                         String retrievedLocation = resultSet.getString("location");
                         String retrievedDestination = resultSet.getString("destination");
+                        String retrievedName = new String("");
 
-                        Ride ride = new Ride(retrievedClientId, retrievedLocation, retrievedDestination);
-                        availableRides.add(ride.toString());
+                        PreparedStatement psGetName = connection.prepareStatement("SELECT name FROM database_user WHERE user_id = ?");
+                        psGetName.setInt(1, retrievedClientId);
+                        ResultSet rsGetName = psGetName.executeQuery();
+
+                        if (!rsGetName.isBeforeFirst())
+                            System.out.println("Name not found");
+                        else
+                            while(rsGetName.next())
+                                retrievedName = rsGetName.getString("name");
+
+                        Ride ride = new Ride(retrievedClientId, retrievedName, retrievedLocation, retrievedDestination);
+                        availableRides.add(ride.toString(true));
                     }
 
 
@@ -924,6 +936,53 @@ public class DBUtils extends LoginController {
             }
         }
         //return null;
+    }
+
+    public static int getIDfromName (String name) {
+        int retrievedID = 0;
+
+        Connection connection = null;
+        PreparedStatement psGetID = null;
+        ResultSet rsGetID = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            psGetID = connection.prepareStatement("SELECT user_id FROM database_user WHERE name = ?");
+            psGetID.setString(1, name);
+            rsGetID = psGetID.executeQuery();
+
+            if (!rsGetID.isBeforeFirst())
+                System.out.println("ID not found");
+            else
+                while(rsGetID.next())
+                    retrievedID = rsGetID.getInt("user_ID");
+        }
+        catch (SQLException e) {
+                e.printStackTrace();
+            }finally {
+                 // close all connections to the db
+                if(rsGetID != null) {
+                    try{
+                        rsGetID.close();
+                    }catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(psGetID != null) {
+                    try{
+                        psGetID.close();
+                    }catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(connection != null) {
+                    try {
+                        connection.close();
+                    }catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        return retrievedID;
     }
 
     public static void driverArrived(ActionEvent event, int driver_id) // ride was successfull => reset client_db, reset driver_db, ADD (not update) ride to ride_db
@@ -1358,6 +1417,7 @@ public class DBUtils extends LoginController {
             preparedStatement.setInt(1, getCurrentLoggedInUserID());
             resultSet = preparedStatement.executeQuery();
 
+            rideHistory.clear();
             if(!resultSet.isBeforeFirst())
             {
                 System.out.println("User not found");
@@ -1380,28 +1440,45 @@ public class DBUtils extends LoginController {
                         }
                         else
                         {
+
                             while (rsCheck.next())
                             {
                                 String retrievedLocation = rsCheck.getString("location");
                                 String retrievedDestination = rsCheck.getString("destination");
                                 int retrievedDriverId = rsCheck.getInt("accepted_driver_id");
                                 boolean retrievedRideCancelled = rsCheck.getBoolean("ride_cancelled");
+                                String retrievedName = new String("");
 
-                                String ride = "Location: "+retrievedLocation+" | Destination: "+retrievedDestination+" | ";
+                                if (retrievedDriverId != 0) {
+                                    PreparedStatement psGetName = connection.prepareStatement("SELECT name FROM database_user WHERE user_id =?");
+                                    psGetName.setInt(1, retrievedDriverId);
+                                    ResultSet rsGetName = psGetName.executeQuery();
+
+                                    if (!rsGetName.isBeforeFirst()) {
+                                        System.out.println("Name not found");
+                                    } else {
+                                        while (rsGetName.next()) {
+                                            retrievedName = rsGetName.getString("name");
+                                        }
+                                    }
+                                    psGetName.close();
+                                    rsGetName.close();
+                                }
+                                String ride = retrievedLocation + " ⟶ " + retrievedDestination + ", ";
 
                                 if(retrievedDriverId == 0)
                                 {
-                                    ride += "No Driver | Status: ";
+                                    ride += "No driver, ";
                                 }
                                 else
                                 {
-                                    ride += "Driver ID: "+retrievedDriverId+" | Status: ";
+                                    ride += retrievedName + ", ";
                                 }
-                                if(retrievedRideCancelled == true)
+                                if(retrievedRideCancelled)
                                 {
                                     ride += "Cancelled";
                                 }
-                                else if(retrievedRideCancelled == false)
+                                else // if(retrievedRideCancelled == false)
                                 {
                                     ride += "Completed";
                                 }
@@ -1426,14 +1503,28 @@ public class DBUtils extends LoginController {
                                 String retrievedDestination = rsCheck.getString("destination");
                                 int retrievedClientId = rsCheck.getInt("requesting_client_id");
                                 boolean retrievedRideCancelled = rsCheck.getBoolean("ride_cancelled");
+                                String retrievedName = new String("");
 
-                                String ride = "Location: " + retrievedLocation + " | Destination: " + retrievedDestination + " | Client ID: "+retrievedClientId+" | Status: ";
+                                PreparedStatement psGetName = connection.prepareStatement("SELECT name FROM database_user WHERE user_id =?");
+                                psGetName.setInt(1, retrievedClientId);
+                                ResultSet rsGetName = psGetName.executeQuery();
 
-                                if (retrievedRideCancelled == true) {
-                                    ride += "Cancelled";
-                                } else if (retrievedRideCancelled == false) {
-                                    ride += "Completed";
+                                if(!rsGetName.isBeforeFirst()) {
+                                    System.out.println("Name not found");
                                 }
+                                else {
+                                    while (rsGetName.next()) {
+                                        retrievedName = rsGetName.getString("name");
+                                    }
+                                }
+                                psGetName.close();
+                                rsGetName.close();
+                                String ride = retrievedLocation + " ⟶ " + retrievedDestination + ", " + retrievedName + ", ";
+
+                                if (retrievedRideCancelled)
+                                    ride += "Cancelled";
+                                else
+                                    ride += "Completed";
 
                                 rideHistory.add(ride);
                             }

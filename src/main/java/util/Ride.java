@@ -2,7 +2,7 @@ package util;
 
 public class Ride {
     private int id;
-    private String location, destination, driverName, clientName;
+    private String location, destination, name;
 
     public Ride(int id, String location, String destination) {
         this.id = id;
@@ -10,12 +10,11 @@ public class Ride {
         this.destination = destination;
     }
 
-    public Ride(int id, String location, String destination, String driverName, String clientName) {
+    public Ride(int id, String name, String location, String destination) {
         this.id = id;
         this.location = location;
         this.destination = destination;
-        this.driverName = driverName;
-        this.clientName = clientName;
+        this.name = name;
     }
 
     @Override
@@ -23,10 +22,7 @@ public class Ride {
         return this.id +" "+ this.location + " " + this.destination;
     }
 
-    public String toString(String role) {
-        if (role.equals("Driver"))
-            return this.location + " ⟶ " + this.destination + ", " + this.driverName;
-        else
-            return this.location + " ⟶ " + this.destination + ", " + this.clientName;
+    public String toString(boolean printName) {
+        return this.location + " ⟶ " + this.destination + ", " + this.name;
     }
 }
