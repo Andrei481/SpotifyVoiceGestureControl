@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class RegistrationLoginController extends LoginController implements Initializable {
@@ -30,7 +28,7 @@ public class RegistrationLoginController extends LoginController implements Init
     private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = "";
     private int age;
     private ToggleGroup toggleGroup;
-    private boolean ageError = false, emailError = false, passwordError = false;
+    private boolean ageError = false, emailError = false, passwordError = false, emptyError = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,30 +45,45 @@ public class RegistrationLoginController extends LoginController implements Init
         radioButtonClient.setToggleGroup(toggleGroup);
 
         radioButtonDriver.selectedProperty().addListener((observable, wasPreviouslySelected, isNowSelected) -> {
-            checkAge(textFieldAge.getText());
-            if(isNowSelected)
-            {
+
+            if(isNowSelected) {
                 labelLicensePlate.setVisible(true);
                 textFieldLicensePlate.setVisible(true);
             }
-            else
-            {
+            else {
                 labelLicensePlate.setVisible(false);
                 textFieldLicensePlate.setVisible(false);
             }
+
+            checkAge(textFieldAge.getText());
+            checkEmptyFields();
         });
 
+        textFieldFirstName.textProperty().addListener((observable, oldValue, newValue) -> checkEmptyFields());
+        textFieldFirstName.textProperty().addListener((observable, oldValue, newValue) -> checkEmptyFields());
         textFieldAge.textProperty().addListener((observable, oldValue, newValue) -> {
 
             if(!newValue.matches("\\*d")) {
                 textFieldAge.setText(newValue.replaceAll("\\D", ""));
             }
-            checkAge(newValue);
+            checkEmptyFields();
+            checkAge(textFieldAge.getText());
         });
-
-        textFieldEmail.textProperty().addListener((observable, oldValue, newValue) -> checkValidEmail(newValue));
-        fieldPassword.textProperty().addListener((observable, oldValue, newValue) -> checkPassword());
-        fieldConfirmPassword.textProperty().addListener((observable, oldValue, newValue) -> checkPassword());
+        comboBoxGender.valueProperty().addListener((observable, oldValue, newValue) -> checkEmptyFields());
+        textFieldEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            checkValidEmail(newValue);
+            checkEmptyFields();
+        });
+        textFieldUsername.textProperty().addListener((observable, oldValue, newValue) -> checkEmptyFields());
+        fieldPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+            checkPassword();
+            checkEmptyFields();
+        });
+        fieldConfirmPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+            checkPassword();
+            checkEmptyFields();
+        });
+        textFieldLicensePlate.textProperty().addListener((observable, oldValue, newValue) -> checkEmptyFields());
 
         comboBoxGender.setItems(genders);
 
@@ -132,16 +145,25 @@ public class RegistrationLoginController extends LoginController implements Init
         buttonLogin.setOnAction(event -> DBUtils.changeScene(event, "login.fxml", "RideShare", null, null, null, 0, null, null));
     }
 
-    public boolean checkEmptyFields()
-    {
-        return textFieldUsername.textProperty().getValue() == null || fieldPassword.textProperty().getValue() == null || textFieldEmail.textProperty().getValue() == null || textFieldFirstName.textProperty().getValue() == null || textFieldLastName.textProperty().getValue() == null || textFieldAge.textProperty().getValue() == null || comboBoxGender.getValue() == null;
-       /* if(role.equals("Driver"))
-        {
-            if(licensePlate.equals(""))
-            {
-                return true;
+    public boolean checkEmptyFields() {
+
+        emptyError =
+                        textFieldFirstName.getText().equals("") ||
+                        textFieldLastName.getText().equals("") ||
+                        textFieldAge.getText().equals("") ||
+                        comboBoxGender.getValue() == null ||
+                        textFieldEmail.getText().equals("") ||
+                        textFieldUsername.getText().equals("") ||
+                        fieldPassword.getText().equals("") ||
+                        fieldConfirmPassword.getText().equals("");
+
+       if(radioButtonDriver.isSelected()) {
+            if(textFieldLicensePlate.getText().equals("")) {
+                emptyError = true;
             }
-        }*/
+       }
+       updateErrors();
+       return emptyError;
     }
 
     public boolean checkValidEmail(String email)
@@ -204,11 +226,13 @@ public class RegistrationLoginController extends LoginController implements Init
 
     private void updateErrors() {
 
-        boolean anyError = (ageError || emailError || passwordError);
+        boolean anyError = (ageError || emailError || passwordError || emptyError);
         buttonSignup.setDisable(anyError);
         labelError.setVisible(anyError);
 
         if (anyError) {
+            if (emptyError)
+                labelError.setText("Please fill all the fields.");
             if (passwordError)
                 labelError.setText("Passwords don't match.");
             if (emailError)
