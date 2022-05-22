@@ -118,6 +118,11 @@
                                  <Font name="System Bold" size="17.0" />
                              </font>
                          </Label>
+                         <Label text="Unique ID" textAlignment="CENTER" textFill="#655757">
+                             <font>
+                                 <Font name="System Bold" size="17.0" />
+                             </font>
+                         </Label>
                          <Label text="Role" textAlignment="CENTER" textFill="#655757">
                              <font>
                                  <Font name="System Bold" size="17.0" />
@@ -153,6 +158,11 @@
                               <Font size="17.0" />
                            </font>
                         </Label>
+                         <Label fx:id="labelUserID" text="#0">
+                             <font>
+                                 <Font size="17.0" />
+                             </font>
+                         </Label>
                         <Label fx:id="labelRole" text="Client/Driver">
                            <font>
                               <Font size="17.0" />

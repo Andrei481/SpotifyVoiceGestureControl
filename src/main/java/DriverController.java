@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 public class DriverController extends LoginController implements Initializable {
     @FXML
-    public Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelRole, labelPlate, labelSelectedRide;
+    public Label labelName, labelAge, labelGender, labelEmail, labelUsername, labelUserID, labelRole, labelPlate, labelSelectedRide;
     @FXML
     private Button buttonStart, buttonLogout, buttonRefresh;
     @FXML
@@ -77,6 +77,7 @@ public class DriverController extends LoginController implements Initializable {
         labelGender.setText(gender);
         labelEmail.setText(email);
         labelUsername.setText(username);
+        labelUserID.setText('#' + String.valueOf(DBUtils.getCurrentLoggedInUserID()));
         labelRole.setText(role);
         labelPlate.setText(licensePlate);
 
