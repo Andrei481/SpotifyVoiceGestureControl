@@ -1449,19 +1449,21 @@ public class DBUtils extends LoginController {
                                 boolean retrievedRideCancelled = rsCheck.getBoolean("ride_cancelled");
                                 String retrievedName = new String("");
 
-                                PreparedStatement psGetName = connection.prepareStatement("SELECT name FROM database_user WHERE user_id =?");
-                                psGetName.setInt(1, retrievedDriverId);
-                                ResultSet rsGetName = psGetName.executeQuery();
+                                if (retrievedDriverId != 0) {
+                                    PreparedStatement psGetName = connection.prepareStatement("SELECT name FROM database_user WHERE user_id =?");
+                                    psGetName.setInt(1, retrievedDriverId);
+                                    ResultSet rsGetName = psGetName.executeQuery();
 
-                                if(!rsGetName.isBeforeFirst()) {
-                                    System.out.println("Name not found");
-                                }
-                                else {
-                                    while (rsGetName.next()) {
-                                        retrievedName = rsGetName.getString("name");
+                                    if (!rsGetName.isBeforeFirst()) {
+                                        System.out.println("Name not found");
+                                    } else {
+                                        while (rsGetName.next()) {
+                                            retrievedName = rsGetName.getString("name");
+                                        }
                                     }
+                                    psGetName.close();
+                                    rsGetName.close();
                                 }
-
                                 String ride = retrievedLocation + " ⟶ " + retrievedDestination + ", ";
 
                                 if(retrievedDriverId == 0)
@@ -1515,6 +1517,8 @@ public class DBUtils extends LoginController {
                                         retrievedName = rsGetName.getString("name");
                                     }
                                 }
+                                psGetName.close();
+                                rsGetName.close();
                                 String ride = retrievedLocation + " ⟶ " + retrievedDestination + ", " + retrievedName + ", ";
 
                                 if (retrievedRideCancelled)
