@@ -30,6 +30,7 @@ public class DriverController extends LoginController implements Initializable {
     private int client_id;
     private String selectedRide;
     private String location;
+    private String clientName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,7 +42,8 @@ public class DriverController extends LoginController implements Initializable {
                     selectedRide = new_val;
                     if (selectedRide != null) {
                         labelSelectedRide.setText("Selected ride:" + '\n' + selectedRide);
-                        client_id = Integer.valueOf(new_val.split(" ")[0]);
+                        clientName = new_val.split(", ")[1];
+                        client_id = DBUtils.getIDfromName(clientName);
                         System.out.println("client id: |"+client_id+"|");
                         buttonStart.setDisable(false);
                     }
@@ -97,7 +99,7 @@ public class DriverController extends LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
-            driverRideController.labelWaitsAt.setText("Your client with ID: " + client_id +" waits at location " + labelSelectedRide.getText().split(" ")[2]);
+            driverRideController.labelWaitsAt.setText("Your client " + clientName +" waits at location " + labelSelectedRide.getText().split("\\R")[1]);
             DBUtils.acceptRideDriver(event, DBUtils.getCurrentLoggedInUserID(), client_id);
             driverRideController.username = username;
             driverRideController.role = role;
