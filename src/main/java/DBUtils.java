@@ -75,6 +75,7 @@ public class DBUtils extends LoginController {
                 e.printStackTrace();
             }
         }
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
@@ -1138,6 +1139,7 @@ public class DBUtils extends LoginController {
         }
     }
 
+    // use this when client cancels before driver accepts => reset client_db, add ride to ride_db
     public static void cancelRideClient (ActionEvent event) {
 
         int user_id_of_client = DBUtils.getCurrentLoggedInUserID();
