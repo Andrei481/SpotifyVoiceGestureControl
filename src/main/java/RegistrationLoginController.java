@@ -25,12 +25,12 @@ public class RegistrationLoginController extends LoginController implements Init
     @FXML
     private RadioButton radioButtonDriver, radioButtonClient;
     @FXML
-    private Label labelLicensePlate, labelAge, labelError, labelEmail;
+    private Label labelLicensePlate, labelError;
     private final ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female", "Other");
     private String firstName, lastName, fullName, email, gender, role, username, password, licensePlate = "";
     private int age;
     private ToggleGroup toggleGroup;
-    private boolean ageError = false, emailError = false;
+    private boolean ageError = false, emailError = false, passwordError = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,10 +68,9 @@ public class RegistrationLoginController extends LoginController implements Init
             checkAge(newValue);
         });
 
-        textFieldEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-
-            checkValidEmail(newValue);
-        });
+        textFieldEmail.textProperty().addListener((observable, oldValue, newValue) -> checkValidEmail(newValue));
+        fieldPassword.textProperty().addListener((observable, oldValue, newValue) -> checkPassword());
+        fieldConfirmPassword.textProperty().addListener((observable, oldValue, newValue) -> checkPassword());
 
         comboBoxGender.setItems(genders);
 
@@ -153,16 +152,8 @@ public class RegistrationLoginController extends LoginController implements Init
         Matcher matcher = pattern.matcher(email);
 
         result = matcher.matches();
-
-        if (result) {
-            emailError = false;
-            updateErrors();
-            labelEmail.setTextFill(new Color(0, 0, 0, 1));
-        } else {
-            emailError = true;
-            updateErrors();
-            labelEmail.setTextFill(new Color(1, 0, 0, 1));
-        }
+        emailError = !result;
+        updateErrors();
         return result;
     }
 /*
@@ -200,29 +191,31 @@ public class RegistrationLoginController extends LoginController implements Init
                 currAge = currAge / 10;
                 textFieldAge.setText(String.valueOf(currAge));
             }
-
-            if ((currAge < 18) && (radioButtonDriver.isSelected())) {
-                ageError = true;
-                updateErrors();
-                labelAge.setTextFill(new Color(1, 0, 0, 1));
-            } else {
-                ageError = false;
-                updateErrors();
-                labelAge.setTextFill(new Color(0, 0, 0, 1));
-            }
         }
+        ageError = (currAge < 18) && (radioButtonDriver.isSelected());
+        updateErrors();
+    }
+
+    private void checkPassword () {
+
+        passwordError = !fieldPassword.getText().equals(fieldConfirmPassword.getText());
+        updateErrors();
     }
 
     private void updateErrors() {
 
-        boolean anyError = (ageError || emailError);
+        boolean anyError = (ageError || emailError || passwordError);
         buttonSignup.setDisable(anyError);
         labelError.setVisible(anyError);
 
-        if (emailError)
-            labelError.setText("Please enter a valid email address.");
-        if (ageError)
-            labelError.setText("You must be at least 18 to register as a driver!");
+        if (anyError) {
+            if (passwordError)
+                labelError.setText("Passwords don't match.");
+            if (emailError)
+                labelError.setText("Please enter a valid email address.");
+            if (ageError)
+                labelError.setText("You must be at least 18 to register as a driver!");
+        }
     }
 
     /*public void ageEntered(ActionEvent event)

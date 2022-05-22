@@ -50,7 +50,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                                <Label fx:id="labelAge" prefHeight="22.0" prefWidth="190.0" text="Age">
+                                <Label prefHeight="22.0" prefWidth="190.0" text="Age">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
