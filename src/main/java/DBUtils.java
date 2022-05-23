@@ -47,7 +47,7 @@ public class DBUtils extends LoginController {
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
+        stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
         stage.show();
     }
 
@@ -77,7 +77,7 @@ public class DBUtils extends LoginController {
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
+        stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
         stage.show();
         //checkAvailableRides(event);
     }
@@ -89,7 +89,7 @@ public class DBUtils extends LoginController {
             root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle(title);
-            stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
+            stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
             stage.show();
         }catch (IOException e)
         {

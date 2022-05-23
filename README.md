@@ -1,8 +1,12 @@
-# RideShare_SEF
+# RideShare
 
-[Lab content](http://labs.cs.upt.ro/~oose/pmwiki.php/SEF/LabContent)
+SEF Project Application
 
 ### Team members:
 
 - Andrei JOLDEA &nbsp;&nbsp; &nbsp;&nbsp; — &nbsp;&nbsp; andrei.joldea@student.upt.ro  
 - Andrei LAZAROV &nbsp;&nbsp; — &nbsp;&nbsp; andrei.lazarov@student.upt.ro  
+
+## Screenshots
+
+![Login screen](/extra/login-ss.png)

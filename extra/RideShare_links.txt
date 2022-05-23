@@ -1,0 +1,4 @@
+Repository: https://github.com/Andrei481/RideShare_SEF
+Jira: https://rideshareupt.atlassian.net/jira/software/projects/RSH/boards/2
+Presentation (view-only): https://uptro29158-my.sharepoint.com/:p:/g/personal/andrei_lazarov_student_upt_ro/Ea_0ToCMAu5Djc40zI2nNf8BF32B0rdcBwNnA9wly9lA6g?e=9zodJC
+Document (view-only): https://docs.google.com/document/d/1j_jtoc3um5_jWR6NRMUYJodhq5BMIxh1c0xnIK3Wb5o/edit?usp=sharing
