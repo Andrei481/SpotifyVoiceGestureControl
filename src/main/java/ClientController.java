@@ -127,7 +127,7 @@ public class ClientController extends LoginController implements Initializable {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("RideShare - Ride started");
-        stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth(), stage.getHeight()));
+        stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
         stage.show();
     }
 
