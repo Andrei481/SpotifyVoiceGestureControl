@@ -7,6 +7,6 @@ SEF Project Application
 - Andrei JOLDEA &nbsp;&nbsp; &nbsp;&nbsp; — &nbsp;&nbsp; andrei.joldea@student.upt.ro  
 - Andrei LAZAROV &nbsp;&nbsp; — &nbsp;&nbsp; andrei.lazarov@student.upt.ro  
 
-### Screenshots
+## Screenshots
 
 ![Login screen](/extra/login-ss.png)
