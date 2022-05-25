@@ -45,7 +45,12 @@ public class DriverRideController extends DriverController implements Initializa
             DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
         });
 
-        waitForCancel();
+        Thread thread = new Thread(() -> {
+            System.out.println("Thread Running");
+            waitForCancel();
+        });
+        thread.start();
+
     }
 
     private void waitForCancel() {
@@ -61,15 +66,13 @@ public class DriverRideController extends DriverController implements Initializa
             return;
         }
 
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        waitForCancel();
-                    }
-                },
-                5000
-        );
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("waited a few secs");
+        waitForCancel();
     }
 
     private boolean checkIfCanceledByClient () {

@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -127,14 +128,16 @@ public class DriverController extends LoginController implements Initializable {
 
         buttonRefresh.setDisable(true);
 
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        buttonRefresh.setDisable(false);
-                    }
-                },
-                800
-        );
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            Platform.runLater(() -> buttonRefresh.setDisable(false));
+
+        });
+        thread.start();
+
     }
 }

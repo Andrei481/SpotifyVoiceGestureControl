@@ -675,7 +675,6 @@ public class DBUtils extends LoginController {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         PreparedStatement psUpdate = null;
-        //PreparedStatement psInsert = null;
         ResultSet resultSet = null;
 
         try {
@@ -714,15 +713,6 @@ public class DBUtils extends LoginController {
                         alert.showAndWait();
                     }
                 }
-
-
-                /*psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
-                psInsert.setString(1, location);
-                psInsert.setString(2, destination);
-                psInsert.setInt(3, user_id);
-                psInsert.setInt(4, 0);
-                psInsert.setBoolean(5, false);
-                psInsert.executeUpdate();*/
             }
         }catch (SQLException e)
         {
@@ -755,15 +745,6 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
-            /*if(psInsert != null)
-            {
-                try {
-                    psInsert.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }*/
             if(connection != null)
             {
                 try{

@@ -28,7 +28,11 @@ public class ClientRideController extends ClientController implements Initializa
     public void initialize(URL location, ResourceBundle resources) {
         buttonCancel.setOnAction(this::cancelRide);
 
-        waitForAccept();
+        Thread thread = new Thread(() -> {
+            System.out.println("Thread Running");
+            waitForAccept();
+        });
+        thread.start();
         //finishRide();
     }
     
@@ -55,15 +59,13 @@ public class ClientRideController extends ClientController implements Initializa
             return;
         }
 
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        waitForAccept();
-                    }
-                },
-                5000
-        );
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("waited a few secs");
+        waitForAccept();
     }
     
     private boolean checkIfRideAccepted () {
