@@ -120,8 +120,6 @@ public class DBUtils extends LoginController {
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
             psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM database_user WHERE username = ?");
             psCheckUserAlreadyExists.setString(1, username);
-            //psCheckEmailAlreadyUsed = connection.prepareStatement("SELECT * FROM user_database WHERE email = ? ");
-            //psCheckEmailAlreadyUsed.setString(7, email);
             resultSet = psCheckUserAlreadyExists.executeQuery();
 
             /*
@@ -257,8 +255,6 @@ public class DBUtils extends LoginController {
             connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
             psCheckUserAlreadyExists = connection.prepareStatement("SELECT * FROM database_user WHERE username = ?");
             psCheckUserAlreadyExists.setString(1, username);
-            //psCheckEmailAlreadyUsed = connection.prepareStatement("SELECT * FROM user_database WHERE email = ? ");
-            //psCheckEmailAlreadyUsed.setString(7, email);
             resultSet = psCheckUserAlreadyExists.executeQuery();
 
             /*
