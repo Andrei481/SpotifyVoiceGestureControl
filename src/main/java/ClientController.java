@@ -107,7 +107,7 @@ public class ClientController extends LoginController implements Initializable {
         System.out.println("Ride: " + ride);
         DBUtils.requestRideClient(event, DBUtils.getCurrentLoggedInUserID(), chosenLocation, chosenDestination);
         rideList.add(ride.toString());
-        
+
         Parent root = null;
         try{
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("clientRide.fxml"));
@@ -129,6 +129,7 @@ public class ClientController extends LoginController implements Initializable {
         stage.setTitle("RideShare - Ride started");
         stage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
         stage.show();
+
     }
 
     public void history()
