@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import java.net.URL;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class ClientRideController extends ClientController implements Initializable {
@@ -19,25 +21,115 @@ public class ClientRideController extends ClientController implements Initializa
 
     public String username, role, name, gender, email;
     public int age;
+    private int driver_id = 0;
+
+    private boolean canceled = false;
     
     public void initialize(URL location, ResourceBundle resources) {
-        buttonCancel.setOnAction(event -> cancelRide(event));
+        buttonCancel.setOnAction(this::cancelRide);
 
-        // use these when necessary:
-        //receiveDriver("Gigi", "Male");
+        waitForAccept();
         //finishRide();
     }
-
+    
     public void cancelRide(ActionEvent event) {
 
-        /*
-        Alert alert = new Alert(Alert.AlertType.WARNING, "This will cancel the current ride. Are you sure you want to proceed?", ButtonType.CANCEL, ButtonType.YES);
-        alert.setTitle("Cancel ride - WARNING");
-        alert.showAndWait();
-        */
-
-        DBUtils.cancelRideClient(event);
+        canceled = true;
+        if (driver_id == 0)
+            DBUtils.cancelRideClient(event);
+        else
+            DBUtils.cancelRide(event, driver_id);
         returnToRequestPage(event);
+    }
+
+    private void waitForAccept() {
+
+        System.out.println("checking if driver accepted");
+        if (canceled) {
+            return;
+        }
+
+        if (checkIfRideAccepted()) {
+            System.out.println("accepted");
+
+            return;
+        }
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        waitForAccept();
+                    }
+                },
+                5000
+        );
+    }
+    
+    private boolean checkIfRideAccepted () {
+
+        Connection connection = null;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        boolean rideAccepted = false;
+
+        String driverName1 = null;
+        String driverGender1 = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mariadb://lazarov.go.ro:3306/RideShare", "root", "chocolate");
+            ps = connection.prepareStatement("SELECT corresponding_driver_id FROM database_client WHERE user_id = ?");
+            ps.setInt(1, DBUtils.getCurrentLoggedInUserID());
+            rs = ps.executeQuery();
+
+            if (!rs.isBeforeFirst())
+                System.out.println("corresponding_driver_id not found");
+            else {
+                while(rs.next()) {
+                    driver_id = rs.getInt("corresponding_driver_id");
+                }
+            }
+            System.out.println("accepted by" + driver_id);
+            if (driver_id != 0) {
+
+                rideAccepted = true;
+
+                ps = connection.prepareStatement("SELECT name, gender FROM database_user WHERE user_id = ?");
+                ps.setInt(1, driver_id);
+                rs = ps.executeQuery();
+
+
+                if (!rs.isBeforeFirst())
+                    System.out.println("name, gender not found");
+                else {
+                    while(rs.next()) {
+                        driverName1 = rs.getString("name");
+                        driverGender1 = rs.getString("gender");
+                    }
+                }
+
+                final String driverName = driverName1;
+                final String driverGender = driverGender1;
+                Platform.runLater(() -> receiveDriver(driverName, driverGender));
+            }
+
+
+            rs.close();
+            ps.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                }catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return rideAccepted;
     }
 
     public void receiveDriver(String driverName, String gender) {
@@ -67,7 +159,7 @@ public class ClientRideController extends ClientController implements Initializa
         buttonCancel.setText("Ok");
         buttonCancel.setStyle("-fx-background-color: #0060FA;");
         buttonCancel.setTextFill(new Color(1,1,1,1));
-        buttonCancel.setOnAction(event -> returnToRequestPage(event));
+        buttonCancel.setOnAction(this::returnToRequestPage);
     }
 
     private void returnToRequestPage (ActionEvent event) {
