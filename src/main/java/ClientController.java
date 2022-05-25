@@ -23,7 +23,7 @@ import static jdk.nashorn.internal.objects.NativeString.toUpperCase;
 public class ClientController extends LoginController implements Initializable {
     @FXML
     private Label labelWelcome, labelName, labelAge, labelGender, labelEmail, labelUsername, labelUserID, labelRole;
-    private final ObservableList<String> locations = FXCollections.observableArrayList("A", "B", "C", "D");
+    private final ObservableList<String> locations = FXCollections.observableArrayList("Bd.Vasile Pârvan", "Parcul Rozelor", "Catedrala Mitropolitană", "Iulius Mall", "Calea Aradului", "Calea Șagului");
     @FXML
     private ComboBox<String> comboBoxLocation, comboBoxDestination;
     @FXML

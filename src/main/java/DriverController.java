@@ -101,7 +101,8 @@ public class DriverController extends LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource("driverRide.fxml"));
             root = loader.load();
             DriverRideController driverRideController = loader.getController();
-            driverRideController.labelWaitsAt.setText("Your client " + clientName +" waits at location " + lastSelectedRide.split(" ")[2].split(",")[0] + ".");
+            //driverRideController.labelWaitsAt.setText("Your client " + clientName +" waits at " + lastSelectedRide.split(" ")[0].split(",")[0] + ".");
+            driverRideController.labelWaitsAt.setText("Your client " + clientName +" waits at " + lastSelectedRide.split("⟶")[0]);
             driverRideController.username = username;
             driverRideController.role = role;
             driverRideController.name = name;
