@@ -18,7 +18,7 @@ class DBUtilsTest {
         ResultSet resultSet = null;
         ResultSet rs = null;
 
-        String username = "user1234";
+        String username = "user123";
         String password = "password123";
         String role = "Client";
         String name = "John Smith";
