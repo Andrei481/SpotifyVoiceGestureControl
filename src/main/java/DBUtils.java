@@ -53,6 +53,35 @@ public class DBUtils extends LoginController {
         stage.show();
     }
 
+    public static void changeScene(ActionEvent event, Stage clientRideStage, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email)
+    {
+        Parent root = null;
+        if(username != null && role != null)
+        {
+            try{
+                FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
+                root = loader.load();
+                ClientController clientController = loader.getController();
+                clientController.setUserInfo(username, role, name, age, gender, email);
+            }catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            try{
+                root = FXMLLoader.load(Objects.requireNonNull(DBUtils.class.getResource(fxmlFile)));
+            }catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        clientRideStage.setTitle(title);
+        clientRideStage.setScene(new Scene(Objects.requireNonNull(root), stage.getWidth() - 16, stage.getHeight() - 39));
+        clientRideStage.show();
+    }
+
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email, String licensePlate)
     {
         Parent root = null;
@@ -675,7 +704,6 @@ public class DBUtils extends LoginController {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         PreparedStatement psUpdate = null;
-        //PreparedStatement psInsert = null;
         ResultSet resultSet = null;
 
         try {
@@ -714,15 +742,6 @@ public class DBUtils extends LoginController {
                         alert.showAndWait();
                     }
                 }
-
-
-                /*psInsert = connection.prepareStatement("INSERT INTO database_rides (location, destination, requesting_client_id, accepted_driver_id, ride_cancelled) VALUES (?, ?, ?, ?, ?)");
-                psInsert.setString(1, location);
-                psInsert.setString(2, destination);
-                psInsert.setInt(3, user_id);
-                psInsert.setInt(4, 0);
-                psInsert.setBoolean(5, false);
-                psInsert.executeUpdate();*/
             }
         }catch (SQLException e)
         {
@@ -755,15 +774,6 @@ public class DBUtils extends LoginController {
                     e.printStackTrace();
                 }
             }
-            /*if(psInsert != null)
-            {
-                try {
-                    psInsert.close();
-                }catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }*/
             if(connection != null)
             {
                 try{
