@@ -1,3 +1,6 @@
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.BooleanPropertyBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.EventListener;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -28,7 +32,6 @@ public class DriverRideController extends DriverController implements Initializa
     public String username, role, name, gender, email, licensePlate;
     public int age;
     private boolean rideFinishedByDriver = false;
-    
     public void initialize(URL location, ResourceBundle resources) {
 
         buttonCancel.setOnAction(event -> {
@@ -42,19 +45,19 @@ public class DriverRideController extends DriverController implements Initializa
             DBUtils.changeScene(event, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate);
         });
 
-        //waitForCancel();
+        waitForCancel();
     }
 
     private void waitForCancel() {
 
+        System.out.println("checking if client canceled");
         if (rideFinishedByDriver) {
             return;
         }
 
         if (checkIfCanceledByClient()) {
             System.out.println("canceled by client");
-            // GO TO RIDE LIST PAGE
-            // can't get this shit to work for the life of me
+            Platform.runLater(() -> DBUtils.changeScene(null, "driver.fxml", "RideShare - Driver", username, role, name, age, gender, email, licensePlate));
             return;
         }
 

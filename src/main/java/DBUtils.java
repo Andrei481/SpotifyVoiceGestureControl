@@ -21,6 +21,8 @@ public class DBUtils extends LoginController {
     private static ObservableList<String> availableRides = FXCollections.observableArrayList();
     private static ObservableList<String> rideHistory = FXCollections.observableArrayList();
 
+    private static Stage stage;
+
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username, String role, String name, int age, String gender, String email)
     {
         Parent root = null;
@@ -45,7 +47,7 @@ public class DBUtils extends LoginController {
                 e.printStackTrace();
             }
         }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
@@ -76,7 +78,8 @@ public class DBUtils extends LoginController {
             }
         }
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        if (event != null)
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
         stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
         stage.show();
@@ -88,7 +91,7 @@ public class DBUtils extends LoginController {
             Parent root = null;
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
             root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle(title);
             stage.setScene(new Scene(Objects.requireNonNull(root), 800, 600));
             stage.show();
