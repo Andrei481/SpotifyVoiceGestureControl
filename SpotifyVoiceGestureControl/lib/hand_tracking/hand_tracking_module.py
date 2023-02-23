@@ -2,8 +2,10 @@ import cv2
 import mediapipe as mp
 import time
 
-class HandDetector():
-    def __init__(self, static_image_mode=False, max_num_hands=2, model_complexity = 1, detection_confidence=0.5, tracking_confidence=0.5):
+
+class HandDetector:
+    def __init__(self, static_image_mode=False, max_num_hands=2, model_complexity=1, detection_confidence=0.5,
+                 tracking_confidence=0.5):
         self.static_image_mode = static_image_mode
         self.max_num_hands = max_num_hands
         self.model_complexity = model_complexity
@@ -11,7 +13,8 @@ class HandDetector():
         self.tracking_confidence = tracking_confidence
 
         self.mp_hands = mp.solutions.hands
-        self.hands = self.mp_hands.Hands(self.static_image_mode, self.max_num_hands, self.model_complexity, self.detection_confidence, self.tracking_confidence)
+        self.hands = self.mp_hands.Hands(self.static_image_mode, self.max_num_hands, self.model_complexity,
+                                         self.detection_confidence, self.tracking_confidence)
         self.mp_drawing = mp.solutions.drawing_utils
 
     def find_hands(self, img, draw=True):
@@ -30,7 +33,7 @@ class HandDetector():
             my_hand = self.results_landmarks[hand_number]
             for id, landmark in enumerate(my_hand.landmark):
                 h, w, c = img.shape
-                cx, cy = int(landmark.x*w), int(landmark.y*h)
+                cx, cy = int(landmark.x * w), int(landmark.y * h)
                 print([id, cx, cy])
                 landmarks_list.append([id, cx, cy])
                 if draw:
