@@ -1,6 +1,8 @@
-import spotipy
 import os
+
+import spotipy as sp
 from dotenv import load_dotenv
+from spotipy.oauth2 import SpotifyOAuth
 
 load_dotenv()
 
@@ -9,14 +11,26 @@ class InvalidSearchError(Exception):
     pass
 
 
-spotify_auth_token = os.getenv("SPOTIFY_AUTH_TOKEN")
-print(spotify_auth_token)
+scope = 'app-remote-control user-modify-playback-state user-read-playback-state playlist-read-private'
 
 
 class SpotifyClient:
-    def __init__(self, api_token):
-        self.api_token = api_token
-        self.sp = spotipy.Spotify(auth=api_token)
+    def __init__(self):
+        # self.api_token = api_token
+        # self.sp = sp.Spotify(auth=api_token)
+        self.client_id = os.getenv("CLIENT_ID")
+        self.client_secret = os.getenv("CLIENT_SECRET")
+        self.redirect_uri = "http://localhost:8888/callback"
+        self.scope = scope
+        self.username = os.getenv("SPOTIFY_USERNAME")
+
+        self.auth_manager = SpotifyOAuth(
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            redirect_uri=self.redirect_uri,
+            scope=self.scope
+        )
+        self.sp = sp.Spotify(auth_manager=self.auth_manager)
 
     def get_track_uri(self, name: str) -> str:
         """
@@ -40,9 +54,9 @@ class SpotifyClient:
 
 def main():
     # pass
-    sp = SpotifyClient(spotify_auth_token)
-    song_uri = sp.get_track_uri('Dragostea din tei')
-    sp.play_track(song_uri)
+    spot = SpotifyClient()
+    song_uri = spot.get_track_uri('Engel')
+    spot.play_track(song_uri)
 
 
 if __name__ == "__main__":
