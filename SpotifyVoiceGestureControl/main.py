@@ -2,6 +2,8 @@ import cv2
 
 from lib.hand_tracking.hand_tracking_module import HandDetector
 from lib.voice_recognition.speech_recognition_module import VoiceRecognizer, Commands
+from lib.voice_recognition.phrases import play_phrase
+from api.spotify_client import SpotifyClient
 
 
 def main():
@@ -24,10 +26,16 @@ def main():
     # cv2.destroyAllWindows()
     print("Andrei")
     voice = VoiceRecognizer()
+    spotify = SpotifyClient()
     while True:
         voice.recognize_speech()
         if voice.command == Commands.STOP:
             break
+        if voice.command == Commands.PLAY:
+            song = str(voice.text).split(play_phrase)[1]
+            song_uri = spotify.get_track_uri(song)
+            spotify.play_track(song_uri)
+
 
 
 if __name__ == "__main__":

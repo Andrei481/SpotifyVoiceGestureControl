@@ -1,8 +1,9 @@
 from enum import Enum
-from lib import languages
 
 import speech_recognition
-import pyttsx3
+
+from lib import voice_recognition
+from lib.voice_recognition import phrases
 
 
 class Commands(Enum):
@@ -15,15 +16,15 @@ class Commands(Enum):
 
 
 def get_command(text):
-    if 'stop' in text:
+    if phrases.stop_phrase in text:
         return Commands.STOP
-    elif 'play' in text:
+    elif phrases.play_phrase in text:
         return Commands.PLAY
-    elif 'pause' in text:
+    elif phrases.pause_phrase in text:
         return Commands.PAUSE
-    elif 'play next' in text:
+    elif phrases.next_phrases[0] in text or phrases.next_phrases[1]:
         return Commands.NEXT
-    elif 'play previous' in text:
+    elif phrases.previous_phrase in text:
         return Commands.PREVIOUS
     else:
         return Commands.UNKNOWN
@@ -65,10 +66,7 @@ class VoiceRecognizer:
 
                 print(f"Recognized text:\n\n{self.text}")
                 self.command = get_command(self.text)
-                print(f"\n\nCommand:{self.command}")
-
-                # if "stop" in self.text:
-                #     return Commands.STOP
+                # print(f"\n\nCommand:{self.command}")
 
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
