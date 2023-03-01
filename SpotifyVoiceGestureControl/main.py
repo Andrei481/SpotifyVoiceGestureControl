@@ -1,8 +1,10 @@
+import time
+
 import cv2
 
 from lib.hand_tracking.hand_tracking_module import HandDetector
 from lib.voice_recognition.speech_recognition_module import VoiceRecognizer, Commands
-from lib.voice_recognition.phrases import play_phrase
+from lib.voice_recognition.phrases import *
 from api.spotify_client import SpotifyClient
 
 
@@ -27,14 +29,25 @@ def main():
     print("Andrei")
     voice = VoiceRecognizer()
     spotify = SpotifyClient()
+    # print(spotify.get_track_uri('du hast'))
+    # print(spotify.get_playlist_uri('based'))
+    # spotify.play(spotify.get_playlist_uri('based'))
     while True:
+        voice.command = ""
         voice.recognize_speech()
         if voice.command == Commands.STOP:
             break
-        if voice.command == Commands.PLAY:
+        elif voice.command == Commands.PLAY:
             song = str(voice.text).split(play_phrase)[1]
             song_uri = spotify.get_track_uri(song)
-            spotify.play_track(song_uri)
+            spotify.play(song_uri)
+        elif voice.command == Commands.PLAY_PLAYLIST:
+            playlist = str(voice.text).split(play_playlist_phrase)[1].strip()
+            print(f"|{playlist}|")
+            playlist_id = spotify.get_playlist_id(playlist)
+            # print(playlist_id)
+            spotify.play_playlist(playlist_id)
+            time.sleep(2)
 
 
 

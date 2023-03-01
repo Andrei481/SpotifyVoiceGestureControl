@@ -48,15 +48,31 @@ class SpotifyClient:
         track_uri = results['tracks']['items'][0]['uri']
         return track_uri
 
-    def play_track(self, uri=None):
+    def play(self, uri=None):
         self.sp.start_playback(uris=[uri])
+
+    def get_playlist_id(self, name: str):
+        playlists = self.sp.user_playlists(user=self.username)
+        while playlists:
+            for playlist in playlists['items']:
+                if name == str(playlist['name']).lower():
+                    return playlist['id']
+            if playlists['next']:
+                playlists = sp.next(playlists)
+            else:
+                playlists = None
+        return None
+
+    def play_playlist(self, uri=None):
+        self.sp.start_playback(context_uri=f"spotify:playlist:{uri}")
 
 
 def main():
     # pass
     spot = SpotifyClient()
-    song_uri = spot.get_track_uri('The Perfect Girl')
-    spot.play_track(song_uri)
+    # song_uri = spot.get_track_uri('The Perfect Girl')
+    playlist_uri = spot.get_playlist_id('based')
+    spot.play_playlist(playlist_uri)
 
 
 if __name__ == "__main__":

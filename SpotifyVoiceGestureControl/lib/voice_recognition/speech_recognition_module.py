@@ -1,6 +1,7 @@
 from enum import Enum
 
 import speech_recognition
+import time
 
 from lib import voice_recognition
 from lib.voice_recognition import phrases
@@ -9,6 +10,7 @@ from lib.voice_recognition import phrases
 class Commands(Enum):
     STOP = 0
     PLAY = 1
+    PLAY_PLAYLIST = 6
     PAUSE = 2
     PREVIOUS = 3
     NEXT = 4
@@ -20,12 +22,16 @@ def get_command(text):
         return Commands.STOP
     elif phrases.play_phrase in text:
         return Commands.PLAY
+    elif phrases.play_playlist_phrase in text:
+        return Commands.PLAY_PLAYLIST
     elif phrases.pause_phrase in text:
         return Commands.PAUSE
     elif phrases.next_phrases[0] in text or phrases.next_phrases[1]:
         return Commands.NEXT
     elif phrases.previous_phrase in text:
         return Commands.PREVIOUS
+    elif phrases.play_playlist_phrase in text:
+        return Commands.PLAY_PLAYLIST
     else:
         return Commands.UNKNOWN
 
@@ -34,8 +40,8 @@ class VoiceRecognizer:
     command = Commands.UNKNOWN
     text = ""
 
-    def __init__(self, energy_threshold=200, dynamic_energy_threshold=True, dynamic_energy_adjustment_damping=0.15,
-                 dynamic_energy_ratio=0.15, pause_threshold=0.8, operation_timeout=None, phrase_threshold=0.1,
+    def __init__(self, energy_threshold=220, dynamic_energy_threshold=True, dynamic_energy_adjustment_damping=0.15,
+                 dynamic_energy_ratio=0.15, pause_threshold=0.8, operation_timeout=1, phrase_threshold=1,
                  non_speaking_duration=0.5):
         self.energy_threshold = energy_threshold  # minimum audio energy to consider for recording
         self.dynamic_energy_threshold = dynamic_energy_threshold
