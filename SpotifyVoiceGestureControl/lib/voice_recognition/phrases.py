@@ -5,3 +5,5 @@ pause_phrase = 'spotify stop'
 previous_phrase = 'spotify înapoi'
 next_phrases = ['spotify următorul', 'spotify următoarea']
 resume_phrase = 'spotify continuă'
+increase_volume = 'spotify mai tare'
+decrease_volume = 'spotify mai încet'

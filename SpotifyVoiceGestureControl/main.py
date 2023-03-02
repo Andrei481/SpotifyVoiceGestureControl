@@ -46,12 +46,16 @@ def main():
             spotify.play_playlist(playlist_id)
         elif voice.command == Commands.PAUSE:
             spotify.pause()
-        elif voice.command == Commands.RESUME:
+        elif voice.command == Commands.RESUME:  # FIX THIS
             spotify.resume_playing()
         elif voice.command == Commands.PREVIOUS:
             spotify.previous_song()
         elif voice.command == Commands.NEXT:
             spotify.skip_song()
+        elif voice.command == Commands.VOLUME_INCREASE:
+            spotify.set_volume(True)
+        elif voice.command == Commands.VOLUME_DECREASE:
+            spotify.set_volume(False)
 
 
 if __name__ == "__main__":

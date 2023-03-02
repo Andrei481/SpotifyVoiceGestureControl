@@ -15,7 +15,9 @@ class Commands(Enum):
     PREVIOUS = 4
     NEXT = 5
     RESUME = 6
-    UNKNOWN = 7
+    VOLUME_INCREASE = 7
+    VOLUME_DECREASE = 8
+    UNKNOWN = 9
 
 
 def get_command(text):
@@ -35,6 +37,10 @@ def get_command(text):
         return Commands.PLAY_PLAYLIST
     elif phrases.resume_phrase in text:
         return Commands.RESUME
+    elif phrases.increase_volume in text:
+        return Commands.VOLUME_INCREASE
+    elif phrases.decrease_volume in text:
+        return Commands.VOLUME_DECREASE
     else:
         return Commands.UNKNOWN
 

@@ -110,6 +110,19 @@ class SpotifyClient:
         elif current_track['is_playing']:
             print('Previous')
 
+    def set_volume(self, increase: bool):
+        """
+
+        :param increase: True - increase volume ; False - decrease volume
+        """
+        current_volume = self.sp.current_playback()['device']['volume_percent']
+        if increase:
+            new_volume = min(current_volume + 10, 100)
+            self.sp.volume(volume_percent=new_volume)
+        else:
+            new_volume = min(current_volume - 10, 100)
+            self.sp.volume(volume_percent=new_volume)
+
 
 def main():
     # pass
