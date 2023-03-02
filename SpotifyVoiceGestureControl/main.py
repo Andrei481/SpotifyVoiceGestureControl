@@ -29,9 +29,6 @@ def main():
     print("Andrei")
     voice = VoiceRecognizer()
     spotify = SpotifyClient()
-    # print(spotify.get_track_uri('du hast'))
-    # print(spotify.get_playlist_uri('based'))
-    # spotify.play(spotify.get_playlist_uri('based'))
     while True:
         voice.command = ""
         voice.recognize_speech()
@@ -47,8 +44,14 @@ def main():
             playlist_id = spotify.get_playlist_id(playlist)
             # print(playlist_id)
             spotify.play_playlist(playlist_id)
-            time.sleep(2)
-
+        elif voice.command == Commands.PAUSE:
+            spotify.pause()
+        elif voice.command == Commands.RESUME:
+            spotify.resume_playing()
+        elif voice.command == Commands.PREVIOUS:
+            spotify.previous_song()
+        elif voice.command == Commands.NEXT:
+            spotify.skip_song()
 
 
 if __name__ == "__main__":

@@ -10,11 +10,12 @@ from lib.voice_recognition import phrases
 class Commands(Enum):
     STOP = 0
     PLAY = 1
-    PLAY_PLAYLIST = 6
-    PAUSE = 2
-    PREVIOUS = 3
-    NEXT = 4
-    UNKNOWN = 5
+    PLAY_PLAYLIST = 2
+    PAUSE = 3
+    PREVIOUS = 4
+    NEXT = 5
+    RESUME = 6
+    UNKNOWN = 7
 
 
 def get_command(text):
@@ -26,12 +27,14 @@ def get_command(text):
         return Commands.PLAY_PLAYLIST
     elif phrases.pause_phrase in text:
         return Commands.PAUSE
-    elif phrases.next_phrases[0] in text or phrases.next_phrases[1]:
+    elif phrases.next_phrases[0] in text or phrases.next_phrases[1] in text:
         return Commands.NEXT
     elif phrases.previous_phrase in text:
         return Commands.PREVIOUS
     elif phrases.play_playlist_phrase in text:
         return Commands.PLAY_PLAYLIST
+    elif phrases.resume_phrase in text:
+        return Commands.RESUME
     else:
         return Commands.UNKNOWN
 
