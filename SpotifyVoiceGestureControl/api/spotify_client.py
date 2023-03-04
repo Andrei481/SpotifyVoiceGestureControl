@@ -110,17 +110,24 @@ class SpotifyClient:
         elif current_track['is_playing']:
             print('Previous')
 
-    def set_volume(self, increase: bool):
+    def get_volume(self):
+        return self.sp.current_playback()['device']['volume_percent']
+
+    def set_volume(self, increase=None, volume=0):
         """
 
+        :param volume:
         :param increase: True - increase volume ; False - decrease volume
         """
-        current_volume = self.sp.current_playback()['device']['volume_percent']
-        if increase:
-            new_volume = min(current_volume + 10, 100)
+        current_volume = self.get_volume()
+        if increase is None:
+            new_volume = min(volume, 100)
+            self.sp.volume(volume_percent=new_volume)
+        elif increase is True:
+            new_volume = min(current_volume + volume, 100)
             self.sp.volume(volume_percent=new_volume)
         else:
-            new_volume = min(current_volume - 10, 100)
+            new_volume = min(current_volume - volume, 100)
             self.sp.volume(volume_percent=new_volume)
 
 
@@ -128,8 +135,9 @@ def main():
     # pass
     spot = SpotifyClient()
     # song_uri = spot.get_track_uri('The Perfect Girl')
-    playlist_uri = spot.get_playlist_id('based')
-    spot.play_playlist(playlist_uri)
+    # playlist_uri = spot.get_playlist_id('based')
+    # spot.play_playlist(playlist_uri)
+    # print(spot.get_volume())
 
 
 if __name__ == "__main__":
